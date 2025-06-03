@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a647ece386b4a088e543ce0d69d66ba, type: 3}
+  m_Name: Yellow
+  m_EditorClassIdentifier: 
+  Type: 1
+  CarSprite: {fileID: -6378753527372640246, guid: 1cd1b1ceff39f4047a89fead283af15d, type: 3}

@@ -1,0 +1,334 @@
+fileFormatVersion: 2
+guid: 1cd1b1ceff39f4047a89fead283af15d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2731661695290636906
+    second: cars_spritesheet_0
+  - first:
+      213: 837299028462821472
+    second: cars_spritesheet_1
+  - first:
+      213: 357093919143560272
+    second: cars_spritesheet_2
+  - first:
+      213: -9033057294496193006
+    second: cars_spritesheet_3
+  - first:
+      213: -533939778104942734
+    second: cars_spritesheet_4
+  - first:
+      213: 6343925734613612467
+    second: cars_spritesheet_5
+  - first:
+      213: 4913527819352271073
+    second: cars_spritesheet_6
+  - first:
+      213: 6137293653040979947
+    second: cars_spritesheet_7
+  - first:
+      213: 6169551194696563255
+    second: cars_spritesheet_8
+  - first:
+      213: 5872128703730472012
+    second: cars_spritesheet_9
+  - first:
+      213: -2254640498583785757
+    second: cars_spritesheet_10
+  - first:
+      213: 5000858081903975710
+    second: cars_spritesheet_11
+  - first:
+      213: 4485523454873298966
+    second: cars_spritesheet_12
+  - first:
+      213: -4516384726392768374
+    second: cars_spritesheet_13
+  - first:
+      213: -5921380221132973646
+    second: cars_spritesheet_14
+  - first:
+      213: 1225832734784458409
+    second: cars_spritesheet_15
+  - first:
+      213: -9152447035582463728
+    second: cars_spritesheet_16
+  - first:
+      213: 7457210506118992935
+    second: cars_spritesheet_17
+  - first:
+      213: -405505399872813116
+    second: cars_spritesheet_18
+  - first:
+      213: -4610084650328486112
+    second: cars_spritesheet_19
+  - first:
+      213: -6378753527372640246
+    second: cars_spritesheet_20
+  - first:
+      213: -2150438650850995019
+    second: cars_spritesheet_21
+  - first:
+      213: 4670133474192211275
+    second: cars_spritesheet_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Yellow
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 77
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a001f23867d1a77a0800000000000000
+      internalID: -6378753527372640246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blue
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 0
+        width: 77
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b491c8c07b1822e0800000000000000
+      internalID: -2150438650850995019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Red
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 0
+        width: 77
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4d33eeb6a5afc040800000000000000
+      internalID: 4670133474192211275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Green
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 0
+        width: 77
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fa0412dd7aa3e1498db0e00349bc3f3
+      internalID: 1446273951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Purple
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 0
+        width: 77
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc1118cf4fb4d344da64ac15f23c25e5
+      internalID: -801914290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: dbcb7d3ce1b94c646a5ac48c929e9681
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Blue: -2150438650850995019
+      Green: 1446273951
+      Purple: -801914290
+      Red: 4670133474192211275
+      Spor_Blue: -9152447035582463728
+      Spor_Green: -405505399872813116
+      Spor_Purple: -4610084650328486112
+      Spor_Red: 7457210506118992935
+      Spor_Yellow: 1225832734784458409
+      Yellow: -6378753527372640246
+      cars_spritesheet_0: 2731661695290636906
+      cars_spritesheet_1: 837299028462821472
+      cars_spritesheet_10: -2254640498583785757
+      cars_spritesheet_11: 5000858081903975710
+      cars_spritesheet_12: 4485523454873298966
+      cars_spritesheet_13: -4516384726392768374
+      cars_spritesheet_14: -5921380221132973646
+      cars_spritesheet_2: 357093919143560272
+      cars_spritesheet_3: -9033057294496193006
+      cars_spritesheet_4: -533939778104942734
+      cars_spritesheet_5: 6343925734613612467
+      cars_spritesheet_6: 4913527819352271073
+      cars_spritesheet_7: 6137293653040979947
+      cars_spritesheet_8: 6169551194696563255
+      cars_spritesheet_9: 5872128703730472012
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
