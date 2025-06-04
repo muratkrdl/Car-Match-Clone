@@ -1,6 +1,8 @@
+using System;
+
 namespace Runtime.Systems.GridSystem
 {
-    public struct GridPosition
+    public struct GridPosition : IEquatable<GridPosition>
     {
         public int x;
         public int y;
@@ -22,6 +24,38 @@ namespace Runtime.Systems.GridSystem
                    || (point.x == x +1 && point.y == y) 
                    || (point.y == y -1 && point.x == x) 
                    || (point.y == y -1 && point.x == x);
+        }
+
+        public bool Equals(GridPosition other)
+        {
+            return x == other.x && y == other.y;
+        }
+        
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(x, y);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is GridPosition other && Equals(other);
+        }
+
+        public static bool operator ==(GridPosition a, GridPosition b)
+        {
+            return a.x == b.x && a.y == b.y;
+        }
+        public static bool operator !=(GridPosition a, GridPosition b)
+        {
+            return !(a == b);
+        }
+        public static GridPosition operator +(GridPosition a, GridPosition b)
+        {
+            return new GridPosition(a.x+b.x,a.y+b.y);
+        }
+        public static GridPosition operator -(GridPosition a, GridPosition b)
+        {
+            return new GridPosition(a.x-b.x,a.y-b.y);
         }
         
     }

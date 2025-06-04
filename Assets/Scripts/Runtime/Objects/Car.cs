@@ -1,4 +1,3 @@
-using System;
 using Runtime.Data.UnityObject;
 using Runtime.Events;
 using Runtime.Systems.GridSystem;
@@ -34,9 +33,8 @@ namespace Runtime.Objects
         private void OnCarMoved(GridPosition arg0)
         {
             if (!_gridPosition.IsNearBy(arg0)) return;
-            
-            isAvailable = true;
-            _renderer.color = fadeColor;
+
+            SetIsAvailable(true);
         }
 
         private void OnDisable()
@@ -52,6 +50,11 @@ namespace Runtime.Objects
             _gridPosition = gridPosition;
 
             _rectTransform.position = LevelGrid.Instance.GetWorldPosition(gridPosition);
+
+            if (LevelGrid.Instance.CheckAroundOfGridPosition(_gridPosition) != _gridPosition)
+            {
+                SetIsAvailable(_gridPosition.IsNearBy(gridPosition));
+            }
         }
 
         public void MoveToGridPosition(GridPosition gridPosition)
@@ -59,8 +62,15 @@ namespace Runtime.Objects
             LevelGrid.Instance.CarMovedGridPosition(this, _gridPosition, gridPosition);
             
             // TODO : Pathfind
+            
         }
-        
+
+        public void SetIsAvailable(bool isAvailable)
+        {
+            this.isAvailable = isAvailable;
+            Color newColor = isAvailable ? fadeColor : normalColor;
+            _renderer.color = newColor;
+        }
         public bool GetIsAvailable() => isAvailable;
         
     }

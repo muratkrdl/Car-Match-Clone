@@ -10,11 +10,11 @@ namespace Runtime.Systems.GridSystem
     {
         private int width;
         private int height;
-        private float cellSize;
+        private Vector2 cellSize;
 
         private T[,] gridObjectArray;
 
-        public GridSystem(int width, int height, float cellSize, Func<GridSystem<T>, GridPosition, T> createGridObject)
+        public GridSystem(int width, int height, Vector2 cellSize, Func<GridSystem<T>, GridPosition, T> createGridObject)
         {
             this.width = width;
             this.height = height;
@@ -40,8 +40,8 @@ namespace Runtime.Systems.GridSystem
         {
             return new GridPosition
             (
-                Mathf.RoundToInt(worldPosition.x / cellSize),
-                Mathf.RoundToInt(worldPosition.z / cellSize)
+                Mathf.RoundToInt(worldPosition.x / cellSize.x),
+                Mathf.RoundToInt(worldPosition.y / cellSize.y)
             );
         }
 
@@ -63,6 +63,24 @@ namespace Runtime.Systems.GridSystem
         {
             return height;
         }
+
+        public T[] GetFlatGridObjectArray()
+        {
+            int width = gridObjectArray.GetLength(0);
+            int height = gridObjectArray.GetLength(1);
+            T[] flatArray = new T[width * height];
+
+            int index = 0;
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    flatArray[index] = gridObjectArray[x, y];
+                    index++;
+                }
+            }
+            return flatArray;
+        }
         
         public void CreateDebugObjects(Transform debugPrefab, Transform carPrefab, Transform parent = null)
         {
@@ -73,13 +91,6 @@ namespace Runtime.Systems.GridSystem
                     GridPosition gridPosition = new(x,y);
                     var obj = Object.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity, parent).GetComponent<GridDebugObject>();
                     obj.SetGridObject(GetGridObject(gridPosition) as GridObject);
-
-                    
-                    
-                    
-                    // TODO : Delete This
-                    Car car = Object.Instantiate(carPrefab, GetWorldPosition(gridPosition), Quaternion.identity, obj.transform).GetComponent<Car>();
-                    car.Initialize(Resources.Load<CarSO>("Data/CarSO/Purple") ,gridPosition);
                 }
             }
         }
