@@ -51,3 +51,6 @@ MonoBehaviour:
   - {x: 4, y: 4}
   - {x: 4, y: 2}
   - {x: 4, y: 1}
+  CarPlaceWidth: 7
+  CarPlaceHeight: 1
+  CarPlaceCellSize: {x: 77, y: 135}

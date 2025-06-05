@@ -123,11 +123,9 @@ namespace Runtime.Systems.GridSystem
             gridObject.SetNullCar();
         }
     
-        public void CarMovedGridPosition(Car car, GridPosition fromGridPosition, GridPosition toGridPosition)
+        public void CarMovedGridPosition(Car car, GridPosition fromGridPosition)
         {
             SetNullCarAtGridPosition(fromGridPosition);
-    
-            SetCarAtGridPosition(toGridPosition, car);
         }
     
         public bool HasCarOnGridPosition(GridPosition gridPosition)
@@ -139,7 +137,7 @@ namespace Runtime.Systems.GridSystem
         public Car GetCarAtGridPosition(GridPosition gridPosition)
         {
             GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            return gridObject.GetCar();
+            return gridObject.GetCar() as Car;
         }
         
         public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);

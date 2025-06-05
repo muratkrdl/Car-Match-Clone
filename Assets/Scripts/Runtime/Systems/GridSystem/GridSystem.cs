@@ -33,7 +33,7 @@ namespace Runtime.Systems.GridSystem
 
         public Vector3 GetWorldPosition(GridPosition gridPosition)
         {
-            return new Vector3(gridPosition.x , gridPosition.y, 0) * cellSize;
+            return new Vector3(gridPosition.x * cellSize.x , gridPosition.y * cellSize.y, 0);
         }
 
         public GridPosition GetGridPosition(Vector3 worldPosition)

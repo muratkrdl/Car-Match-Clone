@@ -1,4 +1,3 @@
-using System;
 using Runtime.Enums;
 using Runtime.Objects;
 
@@ -27,6 +26,9 @@ namespace Runtime.Systems.GridSystem
         public Car GetCar() => _car;
         
         public GridPosition GetGridPosition() => _gridPosition;
+        
+        public GridTypes GetGridType() => _type;
+        public bool GetIsInteractable() => _isInteractable;
 
         public void SetGridType(GridTypes type)
         {
@@ -37,8 +39,6 @@ namespace Runtime.Systems.GridSystem
             };
             _type = type;
         }
-        public GridTypes GetGridType() => _type;
-        public bool GetIsInteractable() => _isInteractable;
 
     }
 }
