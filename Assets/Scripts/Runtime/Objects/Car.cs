@@ -32,9 +32,9 @@ namespace Runtime.Objects
 
         private void OnClick_Button()
         {
-            if (!_isAvailable || !CarPlaceGrid.Instance.GetAvailableSlot()) return;
-            
-            LevelGrid.Instance.SetNullCarAtGridPosition(_gridPosition);
+            if (!_isAvailable || !CarPlaceGrid.Instance.HasAvailableSlot()) return;
+
+            LevelGrid.Instance.CarMovedGridPosition(_gridPosition);
             CoreGameEvents.Instance.onCarMoved?.Invoke(_gridPosition);
             CoreGameEvents.Instance.onCarClicked?.Invoke(this);
             _gridPosition = new GridPosition(-99, -99);
@@ -72,17 +72,10 @@ namespace Runtime.Objects
             }
         }
 
-        public void MoveToGridPosition(GridPosition gridPosition)
+        public void MoveToGridPosition(GridObject gridObject, TweenCallback tweenCallback = null)
         {
-            LevelGrid.Instance.CarMovedGridPosition(this, _gridPosition);
-            
             // TODO : Pathfind
-            
-        }
-
-        public void DoMoveToPos(Vector3 pos)
-        {
-            transform.DOMove(pos,1);
+            transform.DOMove(CarPlaceGrid.Instance.GetWorldPosition(gridObject.GetGridPosition()),.5f).OnComplete(tweenCallback);
         }
 
         public void SetIsAvailable(bool isAvailable)

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CD_CAR
   m_EditorClassIdentifier: 
   Data:
-    MoveDuration: 1.5
+    MoveDuration: 0.5
     TurnDuration: 0.1

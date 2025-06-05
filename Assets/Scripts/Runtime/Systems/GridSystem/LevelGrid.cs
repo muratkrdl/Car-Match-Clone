@@ -110,22 +110,20 @@ namespace Runtime.Systems.GridSystem
                 Instantiate(obstaclePrefab, GetWorldPosition(gridPosition), Quaternion.identity, transform);
             }
         }
-    
-        public void SetCarAtGridPosition(GridPosition gridPosition, Car car)
-        {
-            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            gridObject.SetCar(car);
-        }
-    
-        public void SetNullCarAtGridPosition(GridPosition gridPosition)
-        {
-            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            gridObject.SetNullCar();
-        }
-    
-        public void CarMovedGridPosition(Car car, GridPosition fromGridPosition)
+        
+        public void CarMovedGridPosition(GridPosition fromGridPosition)
         {
             SetNullCarAtGridPosition(fromGridPosition);
+        }
+    
+        private void SetCarAtGridPosition(GridPosition gridPosition, Car car)
+        {
+            _gridSystem.GetGridObject(gridPosition).SetCar(car);
+        }
+    
+        private void SetNullCarAtGridPosition(GridPosition gridPosition)
+        {
+            _gridSystem.GetGridObject(gridPosition).SetNullCar();
         }
     
         public bool HasCarOnGridPosition(GridPosition gridPosition)

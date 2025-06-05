@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Runtime.Data.UnityObject;
 using Runtime.Enums;
 using Runtime.Events;
@@ -13,33 +13,40 @@ namespace Runtime.Systems.GridSystem
     public class CarPlaceGrid : MonoSingleton<CarPlaceGrid>
     {
         [SerializeField] private CarPlaceObject carPlaceObjectPrefab;
-    
-        private int _width;
-        private int _height;
-        private Vector2 _cellSize;
 
         private GridSystem<GridObject> _gridSystem;
-        
         private LevelSO _currentLevel;
 
-        private Vector2Int[] _checkPoses = 
-        {
-            Vector2Int.left,
-            Vector2Int.right,
-        };
-    
         protected override void Awake()
         {
             base.Awake();
-            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level1");
-            
-            _width = _currentLevel.CarPlaceWidth;
-            _height = _currentLevel.CarPlaceHeight;
-            _cellSize = _currentLevel.CarPlaceCellSize;
-            
-            _gridSystem = new GridSystem<GridObject>(_width, _height, _cellSize, (g, gridPosition) => new GridObject(g, gridPosition));
 
+            LoadLevelData();
+            InitializeGridSystem();
             CreateLevel();
+        }
+        
+        private void LoadLevelData()
+        {
+            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level1");
+        }
+
+        private void InitializeGridSystem()
+        {
+            _gridSystem = new GridSystem<GridObject>(
+                _currentLevel.CarPlaceWidth,
+                _currentLevel.CarPlaceHeight,
+                _currentLevel.CarPlaceCellSize,
+                (g, pos) => new GridObject(g, pos));
+        }
+
+        private void CreateLevel()
+        {
+            foreach (var gridObject in _gridSystem.GetFlatGridObjectArray())
+            {
+                Instantiate(carPlaceObjectPrefab, transform);
+                gridObject.SetGridType(GridTypes.Space);
+            }
         }
 
         private void OnEnable()
@@ -47,134 +54,112 @@ namespace Runtime.Systems.GridSystem
             CoreGameEvents.Instance.onCarClicked += OnCarClicked;
         }
 
-        private void OnCarClicked(Car car)
-        {
-            if (!HasFreeSpace()) return;
-            
-            SetNewCar(car);
-        }
-
         private void OnDisable()
         {
             CoreGameEvents.Instance.onCarClicked -= OnCarClicked;
         }
 
-        private void CreateLevel()
+        private void OnCarClicked(Car car)
         {
-            InitializePlaces();
+            if (!HasFreeSpace()) return;
+            PlaceCarOnGrid(car);
         }
-        
-        private void InitializePlaces()
+
+        private void PlaceCarOnGrid(Car car)
         {
-            foreach (GridObject item in _gridSystem.GetFlatGridObjectArray())
+            var sameTypeCars = GetSameTypeCars(car);
+
+            if (sameTypeCars.Any())
             {
-                Instantiate(carPlaceObjectPrefab, transform);
-                item.SetGridType(GridTypes.Space);
-            }
-        }
-        
-        private void SetNewCar(Car car)
-        {
-            var gridArray = _gridSystem.GetFlatGridObjectArray();
+                var lastCarPos = sameTypeCars.Last().GetGridPosition();
+                var newPos = new GridPosition(lastCarPos.x + 1, 0);
 
-            var sameTypeCars = gridArray
-                .Where(g => g.HasCar() && g.GetCar().GetCarSo() == car.GetCarSo())
-                .OrderBy(g => g.GetGridPosition().x)
-                .ToList();
-
-            if (sameTypeCars.Count > 0)
-            {
-                GridPosition newPos = new GridPosition(sameTypeCars.Last().GetGridPosition().x + 1, 0);
-
-                if (HasCarOnGridPosition(newPos))
+                if (HasCarAt(newPos))
                 {
-                    SlideObjectToWay(newPos, 1);
+                    SlideCarsToWay(newPos, 1);
                 }
 
-                SetCarAtGridPosition(newPos, car);
-                car.SetIsAvailable(false);
-                car.DoMoveToPos(GetWorldPosition(newPos));
+                SetCarToGridPosition(car, newPos);
             }
             else
             {
-                var emptySlot = gridArray
-                    .Where(g => !g.HasCar())
-                    .OrderBy(g => g.GetGridPosition().x)
-                    .FirstOrDefault();
-
+                var emptySlot = GetFirstEmptySlot();
                 if (emptySlot == null) return;
-                
-                var pos = emptySlot.GetGridPosition();
-                SetCarAtGridPosition(pos, car);
-                car.SetIsAvailable(false);
-                car.DoMoveToPos(GetWorldPosition(pos));
+
+                SetCarToGridPosition(car, emptySlot.GetGridPosition());
             }
         }
 
-        private void SlideObjectToWay(GridPosition pos, int amount)
+        private void SlideCarsToWay(GridPosition fromPosition, int offset)
         {
-            List<GridObject> slideToRightList = _gridSystem.GetFlatGridObjectArray()
-                .Where(g => g.HasCar() && g.GetGridPosition().x >= pos.x)
-                .OrderByDescending(g => g.GetGridPosition().x)
+            var carsToSlide = _gridSystem.GetFlatGridObjectArray()
+                .Where(g => g.HasCar() && g.GetGridPosition().x >= fromPosition.x)
                 .ToList();
 
-            foreach (var item in slideToRightList)
+            carsToSlide = offset > 0
+                ? carsToSlide.OrderByDescending(g => g.GetGridPosition().x).ToList()
+                : carsToSlide.OrderBy(g => g.GetGridPosition().x).ToList();
+            
+            foreach (var gridObject in carsToSlide)
             {
-                GridPosition toObject = new GridPosition(item.GetGridPosition().x + amount, 0);
-                CarMovedGridPosition(item.GetCar(), item.GetGridPosition(), toObject);
+                var from = gridObject.GetGridPosition();
+                var to = new GridPosition(from.x + offset, 0);
+                MoveCar(gridObject.GetCar(), from, to);
             }
         }
 
-        private void CarMovedGridPosition(Car car, GridPosition fromGridPosition, GridPosition toGridPosition)
+        private void MoveCar(Car car, GridPosition from, GridPosition to)
         {
-            SetNullCarAtGridPosition(fromGridPosition);
-    
-            SetCarAtGridPosition(toGridPosition, car);
+            car.MoveToGridPosition(_gridSystem.GetGridObject(to));
             
-            car.DoMoveToPos(GetWorldPosition(toGridPosition));
-        }
-        
-        private void SetCarAtGridPosition(GridPosition gridPosition, Car car)
-        {
-            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            gridObject.SetCar(car);
-        }
-    
-        private void SetNullCarAtGridPosition(GridPosition gridPosition)
-        {
-            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            gridObject.SetNullCar();
-        }
-    
-        private bool HasCarOnGridPosition(GridPosition gridPosition)
-        {
-            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            return gridObject.HasCar();
-        }
-    
-        private Car GetCarAtGridPosition(GridPosition gridPosition)
-        {
-            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
-            return gridObject.GetCar();
+            SetNullCarAtGridPosition(from);
+            SetCarAtGridPosition(to, car);
         }
 
-        private bool HasFreeSpace()
+        private void SetCarToGridPosition(Car car, GridPosition position)
         {
-            return _gridSystem.GetFlatGridObjectArray().Any(item => item.GetIsInteractable());
+            SetCarAtGridPosition(position, car);
+            car.MoveToGridPosition(_gridSystem.GetGridObject(position), CheckBlastableCars(car));
         }
-        
-        private Vector3 GetWorldPosition(GridPosition gridPosition) => transform.GetChild(gridPosition.x).transform.position;
-        private bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
 
-        public bool GetAvailableSlot()
+        private TweenCallback CheckBlastableCars(Car car)
         {
-            var emptySlot = _gridSystem.GetFlatGridObjectArray()
-                .Where(g => !g.HasCar())
+            var sameTypeCars = GetSameTypeCars(car);
+            if (sameTypeCars.Count != 3) return null;
+            return () =>
+            {
+                GridPosition lastGridPosition = sameTypeCars.Last().GetGridPosition();
+                
+                foreach (var item in sameTypeCars)
+                {
+                    item.GetCar().gameObject.SetActive(false);
+                    SetNullCarAtGridPosition(item.GetGridPosition());
+                }
+                
+                SlideCarsToWay(lastGridPosition, -3);
+            };
+        }
+
+        private List<GridObject> GetSameTypeCars(Car car)
+        {
+            return _gridSystem.GetFlatGridObjectArray()
+                .Where(g => g.HasCar() && g.GetCar().GetCarSo() == car.GetCarSo())
                 .OrderBy(g => g.GetGridPosition().x)
-                .FirstOrDefault();
-
-            return emptySlot != null;
+                .ToList();
         }
+
+        private GridObject GetFirstEmptySlot()
+        {
+            return _gridSystem.GetFlatGridObjectArray()
+                .FirstOrDefault(g => !g.HasCar());
+        }
+
+        private void SetCarAtGridPosition(GridPosition position, Car car) => _gridSystem.GetGridObject(position).SetCar(car);
+        private void SetNullCarAtGridPosition(GridPosition position) => _gridSystem.GetGridObject(position).SetNullCar();
+        private bool HasCarAt(GridPosition position) => _gridSystem.GetGridObject(position).HasCar();
+        private bool HasFreeSpace() => _gridSystem.GetFlatGridObjectArray().Any(g => g.GetIsInteractable());
+        public Vector3 GetWorldPosition(GridPosition position) => transform.GetChild(position.x).position;
+        public bool HasAvailableSlot() => GetFirstEmptySlot() != null;
         
     }
 }
