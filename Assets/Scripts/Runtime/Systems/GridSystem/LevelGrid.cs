@@ -38,7 +38,8 @@ namespace Runtime.Systems.GridSystem
         protected override void Awake()
         {
             base.Awake();
-            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level1");
+            // TODO : CurrentLevelIndex
+            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level");
             _allCarsSOs = Resources.LoadAll<CarSO>("Data/CarSO").ToList();
             
             _width = _currentLevel.Width;
@@ -74,9 +75,9 @@ namespace Runtime.Systems.GridSystem
             transform.position = new Vector3(_centerOfWidth - totalWidth, _centerOfHeight-totalHeight, 0);
         }
 
-        private void SetGridTypes(Vector2Int[] coordinates, GridTypes types)
+        private void SetGridTypes(List<Vector2Int> coordinates, GridTypes types)
         {
-            if (coordinates.Length == 0) return;
+            if (coordinates.Count == 0) return;
             
             foreach (Vector2Int item in coordinates)
             {
@@ -84,9 +85,9 @@ namespace Runtime.Systems.GridSystem
             }
         }
 
-        private void InitializeCar(Vector2Int[] coordinates, List<CarSO> carsSo)
+        private void InitializeCar(List<Vector2Int> coordinates, List<CarSO> carsSo)
         {
-            if (coordinates.Length == 0) return;
+            if (coordinates.Count == 0) return;
 
             SetGridTypes(coordinates, GridTypes.Car);
             
@@ -102,7 +103,7 @@ namespace Runtime.Systems.GridSystem
             }
         }
 
-        private void InitializeObstacle(Vector2Int[] coordinates)
+        private void InitializeObstacle(List<Vector2Int> coordinates)
         {
             foreach (Vector2Int item in coordinates)
             {
