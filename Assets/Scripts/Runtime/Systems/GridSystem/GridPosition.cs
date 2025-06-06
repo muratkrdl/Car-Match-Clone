@@ -6,31 +6,27 @@ namespace Runtime.Systems.GridSystem
     {
         public int x;
         public int y;
- 
+
         public GridPosition(int x, int y)
         {
             this.x = x;
             this.y = y;
         }
 
-        public override string ToString()
-        {
-            return $"x: {x}; y: {y}";
-        }
+        public override string ToString() => $"{x},{y}";
         
-        public bool IsNearBy(GridPosition point)
+        public readonly bool IsNearBy(GridPosition other)
         {
-            return (point.x == x -1 && point.y == y) 
-                   || (point.x == x +1 && point.y == y) 
-                   || (point.y == y -1 && point.x == x) 
-                   || (point.y == y -1 && point.x == x);
+            return (other.x == x - 1 && other.y == y) ||
+                   (other.x == x + 1 && other.y == y) ||
+                   (other.y == y - 1 && other.x == x) ||
+                   (other.y == y + 1 && other.x == x);
         }
 
         public bool Equals(GridPosition other)
         {
             return x == other.x && y == other.y;
         }
-        
         public override int GetHashCode()
         {
             return HashCode.Combine(x, y);
@@ -40,7 +36,6 @@ namespace Runtime.Systems.GridSystem
         {
             return obj is GridPosition other && Equals(other);
         }
-
         public static bool operator ==(GridPosition a, GridPosition b)
         {
             return a.x == b.x && a.y == b.y;

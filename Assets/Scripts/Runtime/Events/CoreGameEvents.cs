@@ -7,7 +7,7 @@ namespace Runtime.Events
 {
     public class CoreGameEvents : MonoSingleton<CoreGameEvents>
     {
-        public UnityAction<GridPosition> onCarMoved;
+        public UnityAction<GridPosition> onNewFreeSpace;
         
         public UnityAction<Car> onCarClicked;
     }
