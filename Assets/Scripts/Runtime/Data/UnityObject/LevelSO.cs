@@ -7,7 +7,7 @@ namespace Runtime.Data.UnityObject
     public class LevelSO : ScriptableObject
     {
         public int LevelID;
-        public string LevelName = "Level ";
+        public string LevelName = "Level";
         public Sprite BackgroundSprite;
         public int CarCount = 25;
         

@@ -61,7 +61,8 @@ namespace Runtime.Systems.GridSystem
             _height = _currentLevel.Height;
             _cellSize = _currentLevel.CellSize;
 
-            _gridSystem = new GridSystem<GridObject>(
+            _gridSystem = new GridSystem<GridObject>
+            (
                 _width,
                 _height,
                 _cellSize,
@@ -143,27 +144,18 @@ namespace Runtime.Systems.GridSystem
         }
         
         public void CarMovedGridPosition(GridPosition fromPosition) => SetNullCarAtGridPosition(fromPosition);
+        private void SetCarAtGridPosition(GridPosition pos, Car car) => _gridSystem.GetGridObject(pos).SetCar(car);
+        private void SetNullCarAtGridPosition(GridPosition pos) => _gridSystem.GetGridObject(pos).SetNullCar();
 
-        private void SetCarAtGridPosition(GridPosition pos, Car car)
-            => _gridSystem.GetGridObject(pos).SetCar(car);
-
-        private void SetNullCarAtGridPosition(GridPosition pos)
-            => _gridSystem.GetGridObject(pos).SetNullCar();
-
-        public bool HasCarOnGridPosition(GridPosition pos)
-            => _gridSystem.GetGridObject(pos).HasCar();
-
-        public Car GetCarAtGridPosition(GridPosition pos)
-            => _gridSystem.GetGridObject(pos).GetCar();
-
-        public GridPosition GetGridPosition(Vector3 worldPos)
-            => _gridSystem.GetGridPosition(worldPos);
-
-        public Vector3 GetWorldPosition(GridPosition gridPos)
-            => _gridSystem.GetWorldPosition(gridPos);
-
-        public bool IsValidGridPosition(GridPosition pos)
-            => _gridSystem.IsValidGridPosition(pos);
+        public bool HasCarOnGridPosition(GridPosition pos) => _gridSystem.GetGridObject(pos).HasCar();
+        public Car GetCarAtGridPosition(GridPosition pos) => _gridSystem.GetGridObject(pos).GetCar();
+        public GridPosition GetGridPosition(Vector3 worldPos) => _gridSystem.GetGridPosition(worldPos);
+        
+        public GridObject GetGridObject(GridPosition gridPosition) => _gridSystem.GetGridObject(gridPosition);
+        public GridSystem<GridObject> GetGridSystem() => _gridSystem;
+        
+        public Vector3 GetWorldPosition(GridPosition gridPos) => _gridSystem.GetWorldPosition(gridPos);
+        public bool IsValidGridPosition(GridPosition pos) => _gridSystem.IsValidGridPosition(pos);
 
         public int GetWidth() => _gridSystem.GetWidth();
         public int GetHeight() => _gridSystem.GetHeight();

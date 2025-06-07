@@ -43,7 +43,7 @@ namespace Runtime.Objects
 
             CoreGameEvents.Instance.onNewFreeSpace?.Invoke(_gridPosition);
             CoreGameEvents.Instance.onCarClicked?.Invoke(this);
-
+            
             _gridPosition = new GridPosition(-99, -99);
         }
 
@@ -61,11 +61,9 @@ namespace Runtime.Objects
         
         public void MoveToGridPosition(GridObject targetGridObject, TweenCallback onComplete = null)
         {
-            // Optional: Add pathfinding logic later
             var targetPosition = CarPlaceGrid.Instance.GetWorldPosition(targetGridObject.GetGridPosition());
 
-            transform.DOMove(targetPosition, 0.5f)
-                .OnComplete(onComplete);
+            transform.DOMove(targetPosition, 0.5f).OnComplete(onComplete);
         }
 
         public void SetIsAvailableCar(bool isAvailable)

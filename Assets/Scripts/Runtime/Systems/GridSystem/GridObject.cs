@@ -29,12 +29,12 @@ namespace Runtime.Systems.GridSystem
             if (!_gridPosition.IsNearBy(pos) || _isInteractable)
                 return;
 
+            SetIsInteractable(true);
+            
             if (_type == GridTypes.Space)
             {
                 CoreGameEvents.Instance.onNewFreeSpace?.Invoke(_gridPosition);
             }
-
-            SetIsInteractable(true);
         }
 
         public override string ToString() => _gridPosition.ToString();
@@ -44,6 +44,7 @@ namespace Runtime.Systems.GridSystem
         public bool HasCar() => _car;
         public Car GetCar() => _car;
         
+        public GridSystem<GridObject> GetGridSystem => _gridSystem;
         public GridPosition GetGridPosition() => _gridPosition;
         public GridTypes GetGridType() => _type;
         public bool GetIsInteractable() => _isInteractable;
