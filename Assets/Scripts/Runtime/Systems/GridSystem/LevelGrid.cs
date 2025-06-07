@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Runtime.Data.UnityObject;
@@ -5,7 +6,9 @@ using Runtime.Enums;
 using Runtime.Events;
 using Runtime.Extensions;
 using Runtime.Objects;
+using Runtime.Systems.Pathfinding;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Runtime.Systems.GridSystem
 {
@@ -21,6 +24,8 @@ namespace Runtime.Systems.GridSystem
         private GridSystem<GridObject> _gridSystem;
         private LevelSO _currentLevel;
         private List<CarSO> _allCarsSOs;
+
+        private Pathfinding.Pathfinding _pathfinding;
 
         private Vector2Int[] _checkPoses = 
         {
@@ -68,6 +73,27 @@ namespace Runtime.Systems.GridSystem
                 _cellSize,
                 (g, gridPosition) => new GridObject(g, gridPosition)
             );
+
+            _pathfinding = new Pathfinding.Pathfinding(_width, _height, _gridSystem);
+        }
+
+        public List<PathNode> GetPath(GridPosition from, GridPosition to)
+        {
+            List<PathNode> path = _pathfinding.FindPath(from.x, from.y, 0, 1);
+            Debug.Log("Null");
+            if (path != null)
+            {
+                return path;
+                Debug.Log("Null değil");
+                for (int i = 0; i < path.Count - 1; i++)
+                {
+                    Debug.Log(path[i].x + " " + path[i].y);
+                    Debug.DrawLine(GetWorldPosition(new GridPosition(path[i].x, path[i].y)),
+                        GetWorldPosition(new GridPosition(path[i + 1].x, path[i + 1].y)), Color.green, 999f);
+                }
+            }
+
+            return null;
         }
 
         private void CreateLevel()
@@ -98,7 +124,7 @@ namespace Runtime.Systems.GridSystem
         {
             foreach (var coord in coordinates)
             {
-                _gridSystem.GetGridObject(new GridPosition(coord.x, coord.y)).SetGridType(type);
+                GetGridObject(new GridPosition(coord.x, coord.y)).SetGridType(type);
             }
         }
 
@@ -116,7 +142,7 @@ namespace Runtime.Systems.GridSystem
                 GridPosition gridPosition = new(item.x, item.y);
                 Car car = Instantiate(carPrefab, GetWorldPosition(gridPosition), Quaternion.identity, transform).GetComponent<Car>();
                 SetCarAtGridPosition(gridPosition, car);
-                car.Initialize(carSo ,gridPosition, _gridSystem.GetGridObject(gridPosition));
+                car.Initialize(carSo ,gridPosition, GetGridObject(gridPosition));
             }
         }
 
@@ -133,7 +159,7 @@ namespace Runtime.Systems.GridSystem
 
         private void InitializeSpaces(List<Vector2Int> coordinates)
         {
-            SetGridTypes(_currentLevel.spaceCoordinates, GridTypes.Space);
+            SetGridTypes(coordinates, GridTypes.Space);
 
             for (int i = 0; i < _width; i++)
             {
@@ -146,12 +172,12 @@ namespace Runtime.Systems.GridSystem
         public void CarMovedGridPosition(GridPosition fromPosition) => SetNullCarAtGridPosition(fromPosition);
         private void SetCarAtGridPosition(GridPosition pos, Car car) => _gridSystem.GetGridObject(pos).SetCar(car);
         private void SetNullCarAtGridPosition(GridPosition pos) => _gridSystem.GetGridObject(pos).SetNullCar();
+        private GridObject GetGridObject(GridPosition gridPosition) => _gridSystem.GetGridObject(gridPosition);
 
         public bool HasCarOnGridPosition(GridPosition pos) => _gridSystem.GetGridObject(pos).HasCar();
         public Car GetCarAtGridPosition(GridPosition pos) => _gridSystem.GetGridObject(pos).GetCar();
         public GridPosition GetGridPosition(Vector3 worldPos) => _gridSystem.GetGridPosition(worldPos);
         
-        public GridObject GetGridObject(GridPosition gridPosition) => _gridSystem.GetGridObject(gridPosition);
         public GridSystem<GridObject> GetGridSystem() => _gridSystem;
         
         public Vector3 GetWorldPosition(GridPosition gridPos) => _gridSystem.GetWorldPosition(gridPos);

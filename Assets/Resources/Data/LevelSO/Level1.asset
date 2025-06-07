@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37404b157db9420da96cdd0e384e3aa5, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
-  LevelID: 0
+  LevelID: 1
   LevelName: Level1
   BackgroundSprite: {fileID: 0}
   CarCount: 25
@@ -51,6 +51,6 @@ MonoBehaviour:
   - {x: 0, y: 4}
   - {x: 2, y: 4}
   - {x: 1, y: 3}
-  CarPlaceWidth: 7
+  CarPlaceWidth: 5
   CarPlaceHeight: 1
-  CarPlaceCellSize: {x: 77, y: 135}
+  CarPlaceCellSize: {x: 80, y: 140}
