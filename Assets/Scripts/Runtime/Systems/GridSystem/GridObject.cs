@@ -26,8 +26,7 @@ namespace Runtime.Systems.GridSystem
         
         private void OnNewFreeSpace(GridPosition pos)
         {
-            if (!_gridPosition.IsNearBy(pos) || _isInteractable)
-                return;
+            if (!_gridPosition.IsNearBy(pos) || _isInteractable) return;
 
             SetIsInteractable(true);
             
@@ -62,8 +61,6 @@ namespace Runtime.Systems.GridSystem
         public void SetGridType(GridTypes type)
         {
             _type = type;
-
-            SetIsInteractable(_type == GridTypes.Space);
         }
 
     }

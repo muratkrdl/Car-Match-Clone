@@ -42,7 +42,6 @@ namespace Editor
         {
             GUILayout.Label("Level Editor", EditorStyles.boldLabel);
 
-
             if (!levelSO)
             {
                 if (GUILayout.Button("New Level"))
@@ -69,6 +68,7 @@ namespace Editor
             
             if (GUI.changed)
             {
+                if (!levelSO) return;
                 EditorUtility.SetDirty(levelSO);
             }
         }
@@ -88,7 +88,7 @@ namespace Editor
 
                     int colorIndex = cellColorIndexes[pos];
                     GUI.backgroundColor = colors[colorIndex];
-
+                    
                     if (GUILayout.Button($"{x},{y}", GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
                     {
                         colorIndex = (colorIndex + 1) % colors.Length;
@@ -115,7 +115,7 @@ namespace Editor
                     };
                     list.Add(item.Key);
                 }
-                
+
                 levelSO.obstacleCoordinates = obstacleCoordinates;
                 levelSO.spaceCoordinates = spaceCoordinates;
                 levelSO.color1Coordinates = color1Coordinates;
@@ -134,6 +134,7 @@ namespace Editor
                     AssetDatabase.CreateAsset(levelSO, path);
                     AssetDatabase.SaveAssets();
                     AssetDatabase.Refresh();
+                    levelSO = null;
                 }
             }
         }

@@ -12,7 +12,7 @@ namespace Runtime.Data.UnityObject
         public int CarCount = 25;
         
         [Range(1,11)] public int Width = 5;
-        [Range(1,8)] public int Height = 5;
+        [Range(1,9)] public int Height = 5;
         
         public Vector2 CellSize = new Vector2(80, 140f);
 

@@ -51,7 +51,7 @@ namespace Runtime.Systems.GridSystem
 
         private void LoadResources()
         {
-            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level");
+            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level1");
             _allCarsSOs = Resources.LoadAll<CarSO>("Data/CarSO").ToList();
         }
 
@@ -134,10 +134,10 @@ namespace Runtime.Systems.GridSystem
         private void InitializeSpaces(List<Vector2Int> coordinates)
         {
             SetGridTypes(_currentLevel.spaceCoordinates, GridTypes.Space);
-            
-            foreach (Vector2Int item in coordinates)
+
+            for (int i = 0; i < _width; i++)
             {
-                GridPosition gridPosition = new(item.x, item.y);
+                GridPosition gridPosition = new(i, -1);
                 
                 CoreGameEvents.Instance.onNewFreeSpace?.Invoke(gridPosition);
             }
