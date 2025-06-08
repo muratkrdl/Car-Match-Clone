@@ -20,37 +20,36 @@ MonoBehaviour:
   Height: 5
   CellSize: {x: 80, y: 140}
   obstacleCoordinates:
-  - {x: 3, y: 4}
-  - {x: 4, y: 4}
-  - {x: 3, y: 3}
+  - {x: 4, y: 6}
+  - {x: 5, y: 6}
+  - {x: 4, y: 5}
   spaceCoordinates:
-  - {x: 1, y: 2}
-  - {x: 1, y: 1}
-  - {x: 2, y: 0}
-  - {x: 4, y: 0}
-  color1Coordinates:
-  - {x: 0, y: 1}
-  - {x: 2, y: 1}
-  - {x: 3, y: 1}
-  - {x: 0, y: 0}
-  - {x: 1, y: 0}
-  - {x: 3, y: 0}
-  color2Coordinates:
-  - {x: 0, y: 2}
-  - {x: 2, y: 2}
-  - {x: 4, y: 1}
-  color3Coordinates:
-  - {x: 1, y: 4}
-  - {x: 4, y: 3}
-  - {x: 3, y: 2}
-  color4Coordinates:
-  - {x: 0, y: 3}
-  - {x: 2, y: 3}
-  - {x: 4, y: 2}
-  color5Coordinates:
-  - {x: 0, y: 4}
   - {x: 2, y: 4}
+  - {x: 2, y: 3}
+  - {x: 3, y: 2}
+  - {x: 5, y: 2}
+  color1Coordinates:
   - {x: 1, y: 3}
-  CarPlaceWidth: 5
+  - {x: 3, y: 3}
+  - {x: 4, y: 3}
+  - {x: 1, y: 2}
+  - {x: 2, y: 2}
+  - {x: 4, y: 2}
+  color2Coordinates:
+  - {x: 1, y: 4}
+  - {x: 3, y: 4}
+  - {x: 5, y: 3}
+  color3Coordinates:
+  - {x: 2, y: 6}
+  - {x: 5, y: 5}
+  - {x: 4, y: 4}
+  color4Coordinates:
+  - {x: 1, y: 5}
+  - {x: 3, y: 5}
+  - {x: 5, y: 4}
+  color5Coordinates:
+  - {x: 1, y: 6}
+  - {x: 3, y: 6}
+  - {x: 2, y: 5}
+  CarPlaceWidth: 7
   CarPlaceHeight: 1
-  CarPlaceCellSize: {x: 80, y: 140}

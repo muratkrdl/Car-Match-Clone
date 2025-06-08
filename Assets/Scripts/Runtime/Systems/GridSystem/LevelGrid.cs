@@ -17,6 +17,8 @@ namespace Runtime.Systems.GridSystem
         [SerializeField] private Transform gridDebugObjectPrefab;
         [SerializeField] private Transform carPrefab;
         [SerializeField] private Transform obstaclePrefab;
+        [SerializeField] private CarPlaceObject carPlaceObjectPrefab;
+        [SerializeField] private Transform carPlaceObjectParent;
     
         private readonly float _centerOfWidth = 540;
         private readonly float _centerOfHeight = 720;
@@ -26,20 +28,12 @@ namespace Runtime.Systems.GridSystem
         private List<CarSO> _allCarsSOs;
 
         private Pathfinding.Pathfinding _pathfinding;
+        private CarPlaceGrid _carPlaceGrid;
 
-        private Vector2Int[] _checkPoses = 
-        {
-            Vector2Int.up,
-            Vector2Int.down,
-            Vector2Int.left,
-            Vector2Int.right,
-        };
-        
         private int _width;
         private int _height;
         private Vector2 _cellSize;
-
-    
+        
         protected override void Awake()
         {
             base.Awake();
@@ -68,13 +62,15 @@ namespace Runtime.Systems.GridSystem
 
             _gridSystem = new GridSystem<GridObject>
             (
-                _width,
-                _height,
+                _width +2,
+                _height +2,
                 _cellSize,
                 (g, gridPosition) => new GridObject(g, gridPosition)
             );
 
             _pathfinding = new Pathfinding.Pathfinding(_width, _height, _gridSystem);
+
+            _carPlaceGrid = new CarPlaceGrid(_gridSystem, _currentLevel, carPlaceObjectParent);
         }
 
         public List<PathNode> GetPath(GridPosition from, GridPosition to)
@@ -109,17 +105,20 @@ namespace Runtime.Systems.GridSystem
 
             InitializeSpaces(_currentLevel.spaceCoordinates);
 
+            InitializeCarPlace();
+
             PositionGridOnCanvas();
         }
         
         private void PositionGridOnCanvas()
         {
-            float totalWidth = (_width-1) * _cellSize.x / 2f;
-            float totalHeight = (_height-1) * _cellSize.y / 4f;
+            // TODO : Refactor
+            
+            float totalWidth = (_currentLevel.CarPlaceWidth-1) * _cellSize.x/2;
+            float totalHeight = (_height+1) * _cellSize.y/2;
 
             transform.position = new Vector3(_centerOfWidth - totalWidth, _centerOfHeight - totalHeight, 0f);
         }
-        
         private void SetGridTypes(IEnumerable<Vector2Int> coordinates, GridTypes type)
         {
             foreach (var coord in coordinates)
@@ -127,7 +126,6 @@ namespace Runtime.Systems.GridSystem
                 GetGridObject(new GridPosition(coord.x, coord.y)).SetGridType(type);
             }
         }
-
         private void InitializeCar(List<Vector2Int> coordinates, List<CarSO> carsSo)
         {
             if (coordinates.Count == 0) return;
@@ -145,7 +143,6 @@ namespace Runtime.Systems.GridSystem
                 car.Initialize(carSo ,gridPosition, GetGridObject(gridPosition));
             }
         }
-
         private void InitializeObstacle(List<Vector2Int> coordinates)
         {
             SetGridTypes(coordinates, GridTypes.Obstacle);
@@ -156,35 +153,36 @@ namespace Runtime.Systems.GridSystem
                 Instantiate(obstaclePrefab, GetWorldPosition(gridPosition), Quaternion.identity, transform);
             }
         }
-
         private void InitializeSpaces(List<Vector2Int> coordinates)
         {
             SetGridTypes(coordinates, GridTypes.Space);
 
-            for (int i = 0; i < _width; i++)
+            // InitialTimeSetInteractable
+            for (int i = 0; i < _currentLevel.CarPlaceWidth; i++)
             {
-                GridPosition gridPosition = new(i, -1);
+                GridPosition gridPosition = new(i, 1);
                 
                 CoreGameEvents.Instance.onNewFreeSpace?.Invoke(gridPosition);
             }
         }
-        
+        private void InitializeCarPlace()
+        {
+            for (int i = 0; i < _currentLevel.CarPlaceWidth; i++)
+            {
+                GridPosition gridPosition = new(i, 0);
+                Instantiate(carPlaceObjectPrefab, GetWorldPosition(gridPosition), Quaternion.identity, carPlaceObjectParent);
+            }
+        }
+
         public void CarMovedGridPosition(GridPosition fromPosition) => SetNullCarAtGridPosition(fromPosition);
         private void SetCarAtGridPosition(GridPosition pos, Car car) => _gridSystem.GetGridObject(pos).SetCar(car);
         private void SetNullCarAtGridPosition(GridPosition pos) => _gridSystem.GetGridObject(pos).SetNullCar();
         private GridObject GetGridObject(GridPosition gridPosition) => _gridSystem.GetGridObject(gridPosition);
 
-        public bool HasCarOnGridPosition(GridPosition pos) => _gridSystem.GetGridObject(pos).HasCar();
-        public Car GetCarAtGridPosition(GridPosition pos) => _gridSystem.GetGridObject(pos).GetCar();
-        public GridPosition GetGridPosition(Vector3 worldPos) => _gridSystem.GetGridPosition(worldPos);
-        
-        public GridSystem<GridObject> GetGridSystem() => _gridSystem;
-        
         public Vector3 GetWorldPosition(GridPosition gridPos) => _gridSystem.GetWorldPosition(gridPos);
-        public bool IsValidGridPosition(GridPosition pos) => _gridSystem.IsValidGridPosition(pos);
+        public Vector3 GetCarPlaceWorldPosition(GridPosition gridPos) => _carPlaceGrid.GetWorldPosition(gridPos);
 
-        public int GetWidth() => _gridSystem.GetWidth();
-        public int GetHeight() => _gridSystem.GetHeight();
+        public bool HasAvailableSlot() => _carPlaceGrid.HasAvailableSlot();
 
     }
 }

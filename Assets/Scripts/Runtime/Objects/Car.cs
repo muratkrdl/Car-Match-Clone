@@ -37,7 +37,7 @@ namespace Runtime.Objects
         
         private void OnClick_Button()
         {
-            if (!_isAvailable || !CarPlaceGrid.Instance.HasAvailableSlot()) return;
+            if (!_isAvailable || !LevelGrid.Instance.HasAvailableSlot()) return;
 
             LevelGrid.Instance.CarMovedGridPosition(_gridPosition);
 
@@ -61,7 +61,7 @@ namespace Runtime.Objects
         
         public void MoveToGridPosition(GridObject targetGridObject, TweenCallback onComplete = null)
         {
-            var targetPosition = CarPlaceGrid.Instance.GetWorldPosition(targetGridObject.GetGridPosition());
+            var targetPosition = LevelGrid.Instance.GetCarPlaceWorldPosition(targetGridObject.GetGridPosition());
 
             transform.DOMove(targetPosition, 0.5f).OnComplete(onComplete);
         }
