@@ -17,7 +17,7 @@ namespace Runtime.Objects
         private RectTransform _rectTransform;
 
         private CarSO _carSO;
-        private GridPosition _gridPosition;
+        private Vector2Int _coordinates;
         private GridObject _gridObject;
 
         private bool _isAvailable;
@@ -39,29 +39,29 @@ namespace Runtime.Objects
         {
             if (!_isAvailable || !LevelGrid.Instance.HasAvailableSlot()) return;
 
-            LevelGrid.Instance.CarMovedGridPosition(_gridPosition);
+            LevelGrid.Instance.CarMovedGridPosition(_coordinates);
 
-            CoreGameEvents.Instance.onNewFreeSpace?.Invoke(_gridPosition);
+            CoreGameEvents.Instance.onNewFreeSpace?.Invoke(_coordinates);
             CoreGameEvents.Instance.onCarClicked?.Invoke(this);
             
-            _gridPosition = new GridPosition(-99, -99);
+            _coordinates = new Vector2Int(-99, -99);
         }
 
-        public void Initialize(CarSO carSo, GridPosition gridPosition, GridObject gridObject)
+        public void Initialize(CarSO carSo, Vector2Int gridPosition, GridObject gridObject)
         {
             _carSO = carSo;
-            _gridPosition = gridPosition;
+            _coordinates = gridPosition;
             _gridObject = gridObject;
 
             _renderer.sprite = _carSO.CarSprite;
             _rectTransform.position = LevelGrid.Instance.GetWorldPosition(gridPosition);
 
-            _gridObject.SetIsInteractable(false);
+            _gridObject.SetIsWalkable(false);
         }
         
         public void MoveToGridPosition(GridObject targetGridObject, TweenCallback onComplete = null)
         {
-            var targetPosition = LevelGrid.Instance.GetCarPlaceWorldPosition(targetGridObject.GetGridPosition());
+            var targetPosition = LevelGrid.Instance.GetCarPlaceWorldPosition(targetGridObject.GetCoordinates());
 
             transform.DOMove(targetPosition, 0.5f).OnComplete(onComplete);
         }
@@ -74,7 +74,7 @@ namespace Runtime.Objects
         
         public bool GetIsAvailable() => _isAvailable;
         public CarSO GetCarSo() => _carSO;
-        public GridPosition GetGridPosition() => _gridPosition;
+        public Vector2Int GetGridPosition() => _coordinates;
         
     }
 }

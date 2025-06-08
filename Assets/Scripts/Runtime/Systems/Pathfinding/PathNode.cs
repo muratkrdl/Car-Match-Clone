@@ -1,4 +1,5 @@
 using Runtime.Systems.GridSystem;
+using UnityEngine;
 
 namespace Runtime.Systems.Pathfinding
 {
@@ -14,7 +15,7 @@ namespace Runtime.Systems.Pathfinding
 
         public PathNode cameFromNode;
 
-        public PathNode(GridSystem<PathNode> grid, GridPosition position)
+        public PathNode(GridSystem<PathNode> grid, Vector2Int position)
         {
             this.grid = grid;
             x = position.x;

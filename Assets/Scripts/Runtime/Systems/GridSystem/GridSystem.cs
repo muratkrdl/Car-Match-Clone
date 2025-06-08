@@ -12,7 +12,7 @@ namespace Runtime.Systems.GridSystem
 
         private T[,] gridObjectArray;
 
-        public GridSystem(int width, int height, Vector2 cellSize, Func<GridSystem<T>, GridPosition, T> createGridObject)
+        public GridSystem(int width, int height, Vector2 cellSize, Func<GridSystem<T>, Vector2Int, T> createGridObject)
         {
             this.width = width;
             this.height = height;
@@ -24,31 +24,31 @@ namespace Runtime.Systems.GridSystem
             {
                 for(int y = 0; y < height; y++)
                 {
-                    gridObjectArray[x,y] = createGridObject(this, new GridPosition(x, y));
+                    gridObjectArray[x,y] = createGridObject(this, new Vector2Int(x, y));
                 }
             }
         }
 
-        public Vector3 GetWorldPosition(GridPosition gridPosition)
+        public Vector3 GetWorldPosition(Vector2Int gridPosition)
         {
             return new Vector3(gridPosition.x * cellSize.x , gridPosition.y * cellSize.y, 0);
         }
 
-        public GridPosition GetGridPosition(Vector3 worldPosition)
+        public Vector2Int GetGridPosition(Vector3 worldPosition)
         {
-            return new GridPosition
+            return new Vector2Int
             (
                 Mathf.RoundToInt(worldPosition.x / cellSize.x),
                 Mathf.RoundToInt(worldPosition.y / cellSize.y)
             );
         }
 
-        public T GetGridObject(GridPosition gridPosition)
+        public T GetGridObject(Vector2Int gridPosition)
         {
             return gridObjectArray[gridPosition.x, gridPosition.y];
         }
 
-        public bool IsValidGridPosition(GridPosition gridPosition)
+        public bool IsValidGridPosition(Vector2Int gridPosition)
         {
             return gridPosition.x >= 0 && gridPosition.y >= 0 && gridPosition.x < width && gridPosition.y < height;
         }
@@ -86,7 +86,7 @@ namespace Runtime.Systems.GridSystem
             {
                 for(int y = 0; y < height; y++)
                 {
-                    GridPosition gridPosition = new(x,y);
+                    Vector2Int gridPosition = new(x,y);
                     var obj = Object.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity, parent).GetComponent<GridDebugObject>();
                     obj.SetGridObject(GetGridObject(gridPosition) as GridObject);
                 }

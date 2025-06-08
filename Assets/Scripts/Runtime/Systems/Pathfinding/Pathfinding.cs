@@ -15,13 +15,13 @@ namespace Runtime.Systems.Pathfinding
         public Pathfinding(int width, int height, GridSystem<GridObject> refGridSystem)
         {
             _refGridSystem = refGridSystem;
-            _gridSystem = new GridSystem<PathNode>(width, height, Vector2.zero, (GridSystem<PathNode> g, GridPosition gridpos) => new PathNode(g,gridpos));
+            _gridSystem = new GridSystem<PathNode>(width, height, Vector2.zero, (GridSystem<PathNode> g, Vector2Int gridpos) => new PathNode(g,gridpos));
         }
 
         public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
         {
-            PathNode startNode = _gridSystem.GetGridObject(new GridPosition(startX, startY));
-            PathNode endNode = _gridSystem.GetGridObject(new GridPosition(endX, endY));
+            PathNode startNode = _gridSystem.GetGridObject(new Vector2Int(startX, startY));
+            PathNode endNode = _gridSystem.GetGridObject(new Vector2Int(endX, endY));
             
             openList = new List<PathNode> { startNode };
             closedList = new List<PathNode>();
@@ -30,7 +30,7 @@ namespace Runtime.Systems.Pathfinding
             {
                 for (int y = 0; y < _gridSystem.GetHeight(); y++)
                 {
-                    PathNode node = _gridSystem.GetGridObject(new GridPosition(x, y));
+                    PathNode node = _gridSystem.GetGridObject(new Vector2Int(x, y));
                     node.gCost = int.MaxValue;
                     node.CalculateFCost();
                     node.cameFromNode = null;
@@ -52,7 +52,7 @@ namespace Runtime.Systems.Pathfinding
                 openList.Remove(currentNode);
                 closedList.Add(currentNode);
                 
-                if (!_refGridSystem.GetGridObject(new GridPosition(currentNode.x, currentNode.y)).GetIsInteractable())
+                if (!_refGridSystem.GetGridObject(new Vector2Int(currentNode.x, currentNode.y)).GetIsWalkable())
                 {
                     continue;
                 }
@@ -60,7 +60,7 @@ namespace Runtime.Systems.Pathfinding
                 foreach (var neighbourNode in GetNeighbourList(currentNode))
                 {
                     if (closedList.Contains(neighbourNode) ||
-                        !_refGridSystem.GetGridObject(new GridPosition(neighbourNode.x, neighbourNode.y)).GetIsInteractable()) continue;
+                        !_refGridSystem.GetGridObject(new Vector2Int(neighbourNode.x, neighbourNode.y)).GetIsWalkable()) continue;
                     
                     int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
                     if (tentativeGCost < neighbourNode.gCost)
@@ -107,7 +107,7 @@ namespace Runtime.Systems.Pathfinding
 
         private PathNode GetNode(int x, int y)
         {
-            return _gridSystem.GetGridObject(new GridPosition(x, y));
+            return _gridSystem.GetGridObject(new Vector2Int(x, y));
         }
 
         private List<PathNode> CalculatePath(PathNode endNode)
