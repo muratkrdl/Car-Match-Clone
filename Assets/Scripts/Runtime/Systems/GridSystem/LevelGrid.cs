@@ -50,7 +50,7 @@ namespace Runtime.Systems.GridSystem
 
         private void LoadResources()
         {
-            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level1");
+            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level");
             _allCarsSOs = Resources.LoadAll<CarSO>("Data/CarSO").ToList();
         }
 
@@ -62,8 +62,8 @@ namespace Runtime.Systems.GridSystem
 
             _gridSystem = new GridSystem<GridObject>
             (
-                _width +2,
-                _height +2,
+                Mathf.Max(_currentLevel.CarPlaceWidth, _width),
+                Mathf.Max(_currentLevel.CarPlaceHeight, _height) + 2,
                 _cellSize,
                 (g, gridPosition) => new GridObject(g, gridPosition)
             );

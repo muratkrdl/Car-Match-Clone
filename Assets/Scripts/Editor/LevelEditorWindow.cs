@@ -60,6 +60,8 @@ namespace Editor
             levelSO.Height = EditorGUILayout.IntSlider("Grid Height", levelSO.Height, 1, 8);
             levelSO.CellSize = EditorGUILayout.Vector2Field("Cell Size", levelSO.CellSize);
 
+            if (levelSO.Width % 2 != 1) return;
+
             EditorGUILayout.Space();
 
             DrawGrid();
@@ -102,6 +104,8 @@ namespace Editor
             {
                 foreach (var item in cellColorIndexes)
                 {
+                    if (PositionAtDeadZone(item.Key)) continue;
+                    
                     var list = item.Value switch
                     {
                         0 => spaceCoordinates,
@@ -116,13 +120,18 @@ namespace Editor
                     list.Add(item.Key);
                 }
 
-                levelSO.obstacleCoordinates = obstacleCoordinates;
-                levelSO.spaceCoordinates = spaceCoordinates;
-                levelSO.color1Coordinates = color1Coordinates;
-                levelSO.color2Coordinates = color2Coordinates;
-                levelSO.color3Coordinates = color3Coordinates;
-                levelSO.color4Coordinates = color4Coordinates;
-                levelSO.color5Coordinates = color5Coordinates;
+                levelSO.obstacleCoordinates = ParseToRealFormat(obstacleCoordinates);
+                levelSO.spaceCoordinates = ParseToRealFormat(spaceCoordinates);
+                levelSO.color1Coordinates = ParseToRealFormat(color1Coordinates);
+                levelSO.color2Coordinates = ParseToRealFormat(color2Coordinates);
+                levelSO.color3Coordinates = ParseToRealFormat(color3Coordinates);
+                levelSO.color4Coordinates = ParseToRealFormat(color4Coordinates);
+                levelSO.color5Coordinates = ParseToRealFormat(color5Coordinates);
+
+                for (int i = 0; i < levelSO.CarPlaceWidth; i++)
+                {
+                    levelSO.spaceCoordinates.Add(new Vector2Int(i, 1));
+                }
                 
                 string path = $"Assets/Resources/Data/LevelSO/{levelSO.LevelName}.asset";
                 if (AssetDatabase.LoadAssetAtPath<LevelSO>(path))
@@ -137,6 +146,26 @@ namespace Editor
                     levelSO = null;
                 }
             }
+        }
+
+        private List<Vector2Int> ParseToRealFormat(List<Vector2Int> parseList)
+        {
+            List<Vector2Int> returnList = new List<Vector2Int>();
+
+            Vector2Int make = new Vector2Int((levelSO.CarPlaceWidth - levelSO.Width)/2, +2);
+            
+            foreach (var item in parseList)
+            {
+                returnList.Add(item + make);
+            }
+
+            return returnList;
+        }
+
+        private bool PositionAtDeadZone(Vector2Int pos)
+        {
+            int xDistance = (levelSO.CarPlaceWidth - levelSO.Width) / 2;
+            return pos.x >= levelSO.Width;
         }
 
     }
