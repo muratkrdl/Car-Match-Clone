@@ -6,8 +6,7 @@ namespace Runtime.Systems.Pathfinding
     public class PathNode
     {
         private GridSystem<PathNode> grid;
-        public int x;
-        public int y;
+        public Vector2Int Position;
 
         public int gCost;
         public int hCost;
@@ -18,8 +17,8 @@ namespace Runtime.Systems.Pathfinding
         public PathNode(GridSystem<PathNode> grid, Vector2Int position)
         {
             this.grid = grid;
-            x = position.x;
-            y = position.y;
+            Position.x = position.x;
+            Position.y = position.y;
         }
 
         public void CalculateFCost()
@@ -29,7 +28,7 @@ namespace Runtime.Systems.Pathfinding
             
         public override string ToString()
         {
-            return x + "," + y;
+            return Position.x + "," + Position.y;
         }
         
     }

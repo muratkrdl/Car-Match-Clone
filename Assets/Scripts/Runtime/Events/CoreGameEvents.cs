@@ -10,6 +10,6 @@ namespace Runtime.Events
     {
         public UnityAction<Vector2Int> onNewFreeSpace;
         
-        public UnityAction<Car> onCarClicked;
+        public UnityAction<CarController> onCarClicked;
     }
 }

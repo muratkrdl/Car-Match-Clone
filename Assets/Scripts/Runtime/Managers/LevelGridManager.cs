@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Runtime.Data.UnityObject;
@@ -6,19 +5,19 @@ using Runtime.Enums;
 using Runtime.Events;
 using Runtime.Extensions;
 using Runtime.Objects;
+using Runtime.Systems.GridSystem;
 using Runtime.Systems.Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Runtime.Systems.GridSystem
+namespace Runtime.Managers
 {
-    public class LevelGrid : MonoSingleton<LevelGrid>
+    public class LevelGridManager : MonoSingleton<LevelGridManager>
     {
         [SerializeField] private Transform gridDebugObjectPrefab;
         [SerializeField] private Transform carPrefab;
         [SerializeField] private Transform obstaclePrefab;
-        [SerializeField] private CarPlaceObject carPlaceObjectPrefab;
-        [SerializeField] private Transform carPlaceObjectParent;
+        [SerializeField] private Transform carPlaceObjectPrefab;
     
         private readonly float _centerOfWidth = 540;
         private readonly float _centerOfHeight = 720;
@@ -27,7 +26,6 @@ namespace Runtime.Systems.GridSystem
         private LevelSO _currentLevel;
         private List<CarSO> _allCarsSOs;
 
-        private Pathfinding.Pathfinding _pathfinding;
         private CarPlaceGrid _carPlaceGrid;
 
         private int _width;
@@ -48,9 +46,25 @@ namespace Runtime.Systems.GridSystem
             CreateLevel();
         }
 
+        private void OnEnable()
+        {
+            CoreGameEvents.Instance.onCarClicked += OnCarClicked;
+        }
+        
+        private void OnCarClicked(CarController carController)
+        {
+            _carPlaceGrid.PlaceCarOnGrid(carController);
+        }
+
+        private void OnDisable()
+        {
+            CoreGameEvents.Instance.onCarClicked -= OnCarClicked;
+        }
+
         private void LoadResources()
         {
-            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level");
+            // TODO : LevelManager for _currentLevel
+            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level1");
             _allCarsSOs = Resources.LoadAll<CarSO>("Data/CarSO").ToList();
         }
 
@@ -67,29 +81,8 @@ namespace Runtime.Systems.GridSystem
                 _cellSize,
                 (g, gridPosition) => new GridObject(g, gridPosition)
             );
-
-            _pathfinding = new Pathfinding.Pathfinding(_width, _height, _gridSystem);
-
-            _carPlaceGrid = new CarPlaceGrid(_gridSystem, _currentLevel, carPlaceObjectParent);
-        }
-
-        public List<PathNode> GetPath(Vector2Int from, Vector2Int to)
-        {
-            List<PathNode> path = _pathfinding.FindPath(from.x, from.y, 0, 1);
-            Debug.Log("Null");
-            if (path != null)
-            {
-                return path;
-                Debug.Log("Null değil");
-                for (int i = 0; i < path.Count - 1; i++)
-                {
-                    Debug.Log(path[i].x + " " + path[i].y);
-                    Debug.DrawLine(GetWorldPosition(new Vector2Int(path[i].x, path[i].y)),
-                        GetWorldPosition(new Vector2Int(path[i + 1].x, path[i + 1].y)), Color.green, 999f);
-                }
-            }
-
-            return null;
+            
+            _carPlaceGrid = new CarPlaceGrid(_gridSystem, _currentLevel);
         }
 
         private void CreateLevel()
@@ -109,7 +102,7 @@ namespace Runtime.Systems.GridSystem
 
             PositionGridOnCanvas();
         }
-        
+
         private void PositionGridOnCanvas()
         {
             // TODO : Refactor
@@ -138,9 +131,9 @@ namespace Runtime.Systems.GridSystem
             foreach (Vector2Int item in coordinates)
             {
                 Vector2Int gridPosition = new(item.x, item.y);
-                Car car = Instantiate(carPrefab, GetWorldPosition(gridPosition), Quaternion.identity, transform).GetComponent<Car>();
-                SetCarAtGridPosition(gridPosition, car);
-                car.Initialize(carSo ,gridPosition, GetGridObject(gridPosition));
+                CarController carController = Instantiate(carPrefab, GetWorldPosition(gridPosition), Quaternion.identity, transform).GetComponent<CarController>();
+                SetCarAtGridPosition(gridPosition, carController);
+                carController.Initialize(carSo ,gridPosition, GetGridObject(gridPosition));
             }
         }
         private void InitializeObstacle(List<Vector2Int> coordinates)
@@ -170,17 +163,14 @@ namespace Runtime.Systems.GridSystem
             for (int i = 0; i < _currentLevel.CarPlaceWidth; i++)
             {
                 Vector2Int gridPosition = new(i, 0);
-                Instantiate(carPlaceObjectPrefab, GetWorldPosition(gridPosition), Quaternion.identity, carPlaceObjectParent);
+                Instantiate(carPlaceObjectPrefab, GetWorldPosition(gridPosition), Quaternion.identity, transform);
             }
         }
 
-        public void CarMovedGridPosition(Vector2Int fromPosition) => SetNullCarAtGridPosition(fromPosition);
-        private void SetCarAtGridPosition(Vector2Int pos, Car car) => _gridSystem.GetGridObject(pos).SetCar(car);
-        private void SetNullCarAtGridPosition(Vector2Int pos) => _gridSystem.GetGridObject(pos).SetNullCar();
+        private void SetCarAtGridPosition(Vector2Int pos, CarController carController) => _gridSystem.GetGridObject(pos).SetCar(carController);
         private GridObject GetGridObject(Vector2Int gridPosition) => _gridSystem.GetGridObject(gridPosition);
 
         public Vector3 GetWorldPosition(Vector2Int gridPos) => _gridSystem.GetWorldPosition(gridPos);
-        public Vector3 GetCarPlaceWorldPosition(Vector2Int gridPos) => _carPlaceGrid.GetWorldPosition(gridPos);
 
         public bool HasAvailableSlot() => _carPlaceGrid.HasAvailableSlot();
 

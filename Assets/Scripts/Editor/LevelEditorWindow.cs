@@ -130,7 +130,10 @@ namespace Editor
 
                 for (int i = 0; i < levelSO.CarPlaceWidth; i++)
                 {
-                    levelSO.spaceCoordinates.Add(new Vector2Int(i, 1));
+                    for (int j = 0; j < 2; j++)
+                    { 
+                        levelSO.spaceCoordinates.Add(new Vector2Int(i, j));
+                    }
                 }
                 
                 string path = $"Assets/Resources/Data/LevelSO/{levelSO.LevelName}.asset";

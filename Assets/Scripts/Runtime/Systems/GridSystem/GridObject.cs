@@ -10,8 +10,8 @@ namespace Runtime.Systems.GridSystem
         private readonly GridSystem<GridObject> _gridSystem;
         private readonly Vector2Int _coordinates;
         
-        private Car _car;
-        private GridTypes _type;
+        private CarController _carController;
+        private GridTypes _type = GridTypes.None;
         private bool _isWalkable;
 
         public GridObject(GridSystem<GridObject> gridSystem, Vector2Int coordinates)
@@ -46,10 +46,15 @@ namespace Runtime.Systems.GridSystem
 
         public override string ToString() => _coordinates.x + ", " + _coordinates.y;
         
-        public void SetCar(Car car) => _car = car;
-        public void SetNullCar() => _car = null;
-        public bool HasCar() => _car;
-        public Car GetCar() => _car;
+        public void SetCar(CarController carController)
+        {
+            _carController = carController;
+            _carController.SetCoordinates(_coordinates);
+        }
+
+        public void SetNullCar() => _carController = null;
+        public bool HasCar() => _carController;
+        public CarController GetCar() => _carController;
         
         public GridSystem<GridObject> GetGridSystem => _gridSystem;
         public Vector2Int GetCoordinates() => _coordinates;
@@ -67,7 +72,7 @@ namespace Runtime.Systems.GridSystem
 
             if (HasCar())
             {
-                _car.SetIsAvailableCar(_isWalkable);
+                _carController.SetIsAvailableCar(_isWalkable);
             }
         }
 

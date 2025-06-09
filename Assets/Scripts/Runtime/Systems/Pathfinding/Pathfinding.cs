@@ -52,7 +52,8 @@ namespace Runtime.Systems.Pathfinding
                 openList.Remove(currentNode);
                 closedList.Add(currentNode);
                 
-                if (!_refGridSystem.GetGridObject(new Vector2Int(currentNode.x, currentNode.y)).GetIsWalkable())
+                GridObject checkObject = _refGridSystem.GetGridObject(new Vector2Int(currentNode.Position.x, currentNode.Position.y));
+                if (!checkObject.GetIsWalkable() || checkObject.GetGridType() == GridTypes.None || checkObject.HasCar())
                 {
                     continue;
                 }
@@ -60,7 +61,7 @@ namespace Runtime.Systems.Pathfinding
                 foreach (var neighbourNode in GetNeighbourList(currentNode))
                 {
                     if (closedList.Contains(neighbourNode) ||
-                        !_refGridSystem.GetGridObject(new Vector2Int(neighbourNode.x, neighbourNode.y)).GetIsWalkable()) continue;
+                        !_refGridSystem.GetGridObject(new Vector2Int(neighbourNode.Position.x, neighbourNode.Position.y)).GetIsWalkable()) continue;
                     
                     int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
                     if (tentativeGCost < neighbourNode.gCost)
@@ -85,21 +86,21 @@ namespace Runtime.Systems.Pathfinding
         {
             List<PathNode> neighbourList = new List<PathNode>();
             
-            if (currentNode.x -1 >= 0) // Left
+            if (currentNode.Position.x -1 >= 0) // Left
             {
-                neighbourList.Add(GetNode(currentNode.x -1, currentNode.y));
+                neighbourList.Add(GetNode(currentNode.Position.x -1, currentNode.Position.y));
             }
-            if (currentNode.x +1 < _gridSystem.GetWidth()) // Right
+            if (currentNode.Position.x +1 < _gridSystem.GetWidth()) // Right
             {
-                neighbourList.Add(GetNode(currentNode.x +1, currentNode.y));
+                neighbourList.Add(GetNode(currentNode.Position.x +1, currentNode.Position.y));
             }
-            if (currentNode.y -1 >= 0) // Down
+            if (currentNode.Position.y -1 >= 0) // Down
             {
-                neighbourList.Add(GetNode(currentNode.x, currentNode.y -1));
+                neighbourList.Add(GetNode(currentNode.Position.x, currentNode.Position.y -1));
             }
-            if (currentNode.y +1 < _gridSystem.GetWidth()) // Up
+            if (currentNode.Position.y +1 < _gridSystem.GetWidth()) // Up
             {
-                neighbourList.Add(GetNode(currentNode.x, currentNode.y +1));
+                neighbourList.Add(GetNode(currentNode.Position.x, currentNode.Position.y +1));
             }
 
             return neighbourList;
@@ -127,8 +128,8 @@ namespace Runtime.Systems.Pathfinding
 
         private int CalculateDistanceCost(PathNode startNode, PathNode endNode)
         {
-            int xDistance = Mathf.Abs(startNode.x - endNode.x);
-            int yDistance = Mathf.Abs(startNode.y - endNode.y);
+            int xDistance = Mathf.Abs(startNode.Position.x - endNode.Position.x);
+            int yDistance = Mathf.Abs(startNode.Position.y - endNode.Position.y);
             int remaining = xDistance + yDistance;
             
             return remaining;;
