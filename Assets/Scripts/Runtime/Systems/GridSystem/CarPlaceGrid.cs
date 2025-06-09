@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using Runtime.Data.UnityObject;
-using Runtime.Enums;
 using Runtime.Events;
-using Runtime.Extensions;
 using Runtime.Keys;
 using Runtime.Objects;
 using Runtime.Systems.Pathfinding;
@@ -114,15 +111,15 @@ namespace Runtime.Systems.GridSystem
             Vector2Int to = new Vector2Int(blastCars.Sum(car => car.GetCoordinates().x)/3, 1);
             foreach (var car in blastCars)
             {
-                Vector2Int from = car.GetCoordinates();
-                car.MoveSingleToGridPosition(from, to, () =>
-                {
-                    car.gameObject.SetActive(false);
-                });
+                car.BlastAnimation(to, _currentLevel.CellSize);
             }
             
             foreach (var move in slideCarsLeft)
             {
+                if (_gridSystem.GetWorldPosition(move.To) != move.CarController.transform.position)
+                {
+                    move.CarController.MoveSingleToGridPosition(move.From, move.To);
+                }
                 if (_gridSystem.GetGridObject(move.To).GetCar() != move.CarController) continue;
                 move.CarController.MoveSingleToGridPosition(move.From, move.To);
             }
@@ -174,8 +171,7 @@ namespace Runtime.Systems.GridSystem
         }
         private GridObject GetFirstEmptySlot()
         {
-            return _carPlaceGrid
-                .FirstOrDefault(g => !g.HasCar());
+            return _carPlaceGrid.FirstOrDefault(g => !g.HasCar());
         }
         
         private List<Vector3> GetPath(Vector2Int from, Vector2Int to)

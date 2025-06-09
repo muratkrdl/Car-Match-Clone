@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfd6aeaf32e14686ad3de6936942e363, type: 3}
   m_Name: CD_CAR
   m_EditorClassIdentifier: 
-  Data:
-    MoveDuration: 0.5
-    TurnDuration: 0.1
+  moveData:
+    MoveDurationEachGrid: 0.05
+    MaxMoveDuration: 1
+  animationData:
+    BlastAnimationDuration: 0.5
+    UpScale: 1.2
+    UDownScale: 0
+  visualData:
+    fadeColor: {r: 1, g: 1, b: 1, a: 0.19607843}
+    normalColor: {r: 1, g: 1, b: 1, a: 1}

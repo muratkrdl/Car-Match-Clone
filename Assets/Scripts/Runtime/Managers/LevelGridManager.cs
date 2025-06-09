@@ -6,7 +6,6 @@ using Runtime.Events;
 using Runtime.Extensions;
 using Runtime.Objects;
 using Runtime.Systems.GridSystem;
-using Runtime.Systems.Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -64,7 +63,7 @@ namespace Runtime.Managers
         private void LoadResources()
         {
             // TODO : LevelManager for _currentLevel
-            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level1");
+            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level22");
             _allCarsSOs = Resources.LoadAll<CarSO>("Data/CarSO").ToList();
         }
 

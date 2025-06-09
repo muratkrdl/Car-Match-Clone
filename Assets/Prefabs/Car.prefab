@@ -58,8 +58,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86ed5ab2b56497da6c6711ef40e98eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDurationEachGrid: 0.1
-  maxMoveDuration: 2
+  moveDurationEachGrid: 0.05
+  maxMoveDuration: 1
   fadeColor: {r: 1, g: 1, b: 1, a: 0.19607843}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &4369170155718127056
