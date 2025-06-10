@@ -1,0 +1,17 @@
+# Car-Match-Clone
+
+# About game
+
+- This is a Match 3 Game
+
+- Main goal is to complete the level
+
+- There are 7 places for cars
+
+- Every car you click moves to these places
+
+- If you place 3 cars of the same color in these places, these cars will blast.
+  
+- If you fill all 7 places, you lose
+  
+- If you match all the cars and make them blast, you win.
