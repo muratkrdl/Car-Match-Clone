@@ -41,7 +41,7 @@
 | 🔴 Red    | Represents **ColorType4**    |
 | 🟡 Yellow | Represents **ColorType5**    |
 
-> ⚠️ **Note:** Colors in the level editor do **not** represent car colors.
+⚠️ **Note:** Colors in the level editor do **not** represent car colors.
 
 ---
 
