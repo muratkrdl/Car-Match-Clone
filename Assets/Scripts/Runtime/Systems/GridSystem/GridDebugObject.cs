@@ -7,9 +7,9 @@ namespace Runtime.Systems.GridSystem
     {
         [SerializeField] private TextMeshProUGUI coordinateText;
 
-        private object _gridObject;
+        private GridObject _gridObject;
 
-        public virtual void SetGridObject(object gridObject)
+        public virtual void SetGridObject(GridObject gridObject)
         {
             _gridObject = gridObject;
         }

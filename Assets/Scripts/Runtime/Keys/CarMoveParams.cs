@@ -5,7 +5,7 @@ namespace Runtime.Keys
 {
     public struct CarMoveParams
     {
-        public CarController CarController;
+        public CarObject CarObject;
         public Vector2Int From;
         public Vector2Int To;
     }

@@ -1,15 +1,15 @@
 using Runtime.Extensions;
-using Runtime.Objects;
-using Runtime.Systems.GridSystem;
-using UnityEngine;
 using UnityEngine.Events;
 
 namespace Runtime.Events
 {
     public class CoreGameEvents : MonoSingleton<CoreGameEvents>
     {
-        public UnityAction<Vector2Int> onNewFreeSpace;
-        
-        public UnityAction<CarController> onCarClicked;
+        public UnityAction onGameStart;
+        public UnityAction onGameOver;
+        public UnityAction<int> onLevelStart;
+        public UnityAction onLevelFinish;
+        public UnityAction onLevelSuccess;
+        public UnityAction onLevelFailed;
     }
 }

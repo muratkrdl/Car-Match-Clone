@@ -16,7 +16,7 @@ MonoBehaviour:
     MoveDurationEachGrid: 0.05
     MaxMoveDuration: 1
   animationData:
-    BlastAnimationDuration: 0.5
+    BlastAnimationDuration: 0.25
     UpScale: 1.2
     UDownScale: 0
   visualData:

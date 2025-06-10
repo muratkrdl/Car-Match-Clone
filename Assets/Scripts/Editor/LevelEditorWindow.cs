@@ -47,6 +47,14 @@ namespace Editor
                 if (GUILayout.Button("New Level"))
                 {
                     levelSO = CreateInstance<LevelSO>();
+                    cellColorIndexes.Clear();
+                    obstacleCoordinates.Clear();
+                    spaceCoordinates.Clear();
+                    color1Coordinates.Clear();
+                    color2Coordinates.Clear();
+                    color3Coordinates.Clear();
+                    color4Coordinates.Clear();
+                    color5Coordinates.Clear();
                 }
                 return;
             }
@@ -70,7 +78,6 @@ namespace Editor
             
             if (GUI.changed)
             {
-                if (!levelSO) return;
                 EditorUtility.SetDirty(levelSO);
             }
         }
@@ -167,8 +174,7 @@ namespace Editor
 
         private bool PositionAtDeadZone(Vector2Int pos)
         {
-            int xDistance = (levelSO.CarPlaceWidth - levelSO.Width) / 2;
-            return pos.x >= levelSO.Width;
+            return pos.x >= levelSO.Width || pos.y >= levelSO.Height;
         }
 
     }

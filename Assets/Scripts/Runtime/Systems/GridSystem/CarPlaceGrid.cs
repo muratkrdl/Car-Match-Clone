@@ -31,13 +31,13 @@ namespace Runtime.Systems.GridSystem
             }
         }
 
-        public void PlaceCarOnGrid(CarController carController)
+        public void PlaceCarOnGrid(CarObject carObject)
         {
-            Vector2Int fromPos = carController.GetCoordinates();
-            CoreGameEvents.Instance.onNewFreeSpace?.Invoke(fromPos);
+            Vector2Int fromPos = carObject.GetCoordinates();
+            LevelGridEvents.Instance.onNewFreeSpace?.Invoke(fromPos);
             SetNullCarAtGridPosition(fromPos);
             
-            var sameTypeCars = GetSameTypeCars(carController);
+            var sameTypeCars = GetSameTypeCars(carObject);
             var toPosition = sameTypeCars.Any()
                 ? new Vector2Int(sameTypeCars.Last().GetCoordinates().x + 1, 0)
                 : GetFirstEmptySlot().GetCoordinates();
@@ -49,7 +49,7 @@ namespace Runtime.Systems.GridSystem
             
             SetCarToGridPosition(new CarMoveParams()
             {
-                CarController = carController,
+                CarObject = carObject,
                 From = fromPos,
                 To = toPosition
             });
@@ -76,25 +76,25 @@ namespace Runtime.Systems.GridSystem
         
         private void SetCarToGridPosition(CarMoveParams carMoveParams)
         {
-            SetCarAtGridPosition(carMoveParams.To, carMoveParams.CarController);
+            SetCarAtGridPosition(carMoveParams.To, carMoveParams.CarObject);
 
-            var sameTypeCars = GetSameTypeCars(carMoveParams.CarController);
+            var sameTypeCars = GetSameTypeCars(carMoveParams.CarObject);
             if (sameTypeCars.Count == 3)
             {
                 var blastCars = BlastSameTypeCars(sameTypeCars);
                 var movedCars = SlideCarsToLeft();
                 
-                carMoveParams.CarController.MoveToGridPosition(GetPath(carMoveParams.From, carMoveParams.To), () => HandleBlast(blastCars, movedCars));
+                carMoveParams.CarObject.MoveToGridPosition(GetPath(carMoveParams.From, carMoveParams.To), () => HandleBlast(blastCars, movedCars));
             }
             else
             {
-                carMoveParams.CarController.MoveToGridPosition(GetPath(carMoveParams.From, carMoveParams.To));
+                carMoveParams.CarObject.MoveToGridPosition(GetPath(carMoveParams.From, carMoveParams.To));
             }
         }
 
-        private List<CarController> BlastSameTypeCars(List<GridObject> sameTypeCars)
+        private List<CarObject> BlastSameTypeCars(List<GridObject> sameTypeCars)
         {
-            List<CarController> blastCars = new List<CarController>();
+            List<CarObject> blastCars = new List<CarObject>();
 
             foreach (var item in sameTypeCars)
             {
@@ -105,7 +105,7 @@ namespace Runtime.Systems.GridSystem
             return blastCars;
         }
 
-        private void HandleBlast(List<CarController> blastCars, List<CarMoveParams> slideCarsLeft)
+        private void HandleBlast(List<CarObject> blastCars, List<CarMoveParams> slideCarsLeft)
         {
             // TODO : Blast VFX forAnimPos
             Vector2Int to = new Vector2Int(blastCars.Sum(car => car.GetCoordinates().x)/3, 1);
@@ -116,12 +116,12 @@ namespace Runtime.Systems.GridSystem
             
             foreach (var move in slideCarsLeft)
             {
-                if (_gridSystem.GetWorldPosition(move.To) != move.CarController.transform.position)
+                if (move.CarObject.GetCoordinates() == move.To &&(_gridSystem.GetWorldPosition(move.To) != move.CarObject.transform.position))
                 {
-                    move.CarController.MoveSingleToGridPosition(move.From, move.To);
+                    move.CarObject.MoveSingleToGridPosition(move.From, move.To);
                 }
-                if (_gridSystem.GetGridObject(move.To).GetCar() != move.CarController) continue;
-                move.CarController.MoveSingleToGridPosition(move.From, move.To);
+                if (_gridSystem.GetGridObject(move.To).GetCar() != move.CarObject) continue;
+                move.CarObject.MoveSingleToGridPosition(move.From, move.To);
             }
         }
 
@@ -142,7 +142,7 @@ namespace Runtime.Systems.GridSystem
 
                 movedCars.Add(new CarMoveParams()
                 {
-                    CarController = car,
+                    CarObject = car,
                     From = from,
                     To = to
                 });
@@ -162,10 +162,10 @@ namespace Runtime.Systems.GridSystem
             return gridPosition;
         }
 
-        private List<GridObject> GetSameTypeCars(CarController carController)
+        private List<GridObject> GetSameTypeCars(CarObject carObject)
         {
             return _carPlaceGrid
-                .Where(g => g.HasCar() && g.GetCar().GetCarSo() == carController.GetCarSo())
+                .Where(g => g.HasCar() && g.GetCar().GetCarSo() == carObject.GetCarSo())
                 .OrderBy(g => g.GetCoordinates().x)
                 .ToList();
         }
@@ -188,7 +188,7 @@ namespace Runtime.Systems.GridSystem
 
         private bool IsValidGridPosition(Vector2Int gridPosition) => _gridSystem.IsValidGridPosition(gridPosition) && _carPlaceGrid.Contains(_gridSystem.GetGridObject(gridPosition));
         private GridObject GetCarAtGridObject(Vector2Int position) => _gridSystem.GetGridObject(position);
-        private void SetCarAtGridPosition(Vector2Int position, CarController carController) => _gridSystem.GetGridObject(position).SetCar(carController);
+        private void SetCarAtGridPosition(Vector2Int position, CarObject carObject) => _gridSystem.GetGridObject(position).SetCar(carObject);
         private void SetNullCarAtGridPosition(Vector2Int position) => _gridSystem.GetGridObject(position).SetNullCar();
         private bool HasCarAt(Vector2Int position) => _gridSystem.GetGridObject(position).HasCar();
         public bool HasAvailableSlot() => GetFirstEmptySlot() != null;

@@ -10,7 +10,7 @@ namespace Runtime.Systems.GridSystem
         private readonly GridSystem<GridObject> _gridSystem;
         private readonly Vector2Int _coordinates;
         
-        private CarController _carController;
+        private CarObject carObject;
         private GridTypes _type = GridTypes.None;
         private bool _isWalkable;
 
@@ -21,7 +21,7 @@ namespace Runtime.Systems.GridSystem
             
             SetIsWalkable(false);
             
-            CoreGameEvents.Instance.onNewFreeSpace += OnNewFreeSpace;
+            LevelGridEvents.Instance.onNewFreeSpace += OnNewFreeSpace;
         }
         
         private void OnNewFreeSpace(Vector2Int pos)
@@ -32,7 +32,7 @@ namespace Runtime.Systems.GridSystem
             
             if (_type == GridTypes.Space)
             {
-                CoreGameEvents.Instance.onNewFreeSpace?.Invoke(_coordinates);
+                LevelGridEvents.Instance.onNewFreeSpace?.Invoke(_coordinates);
             }
         }
         
@@ -46,15 +46,15 @@ namespace Runtime.Systems.GridSystem
 
         public override string ToString() => _coordinates.x + ", " + _coordinates.y;
         
-        public void SetCar(CarController carController)
+        public void SetCar(CarObject carObject)
         {
-            _carController = carController;
-            _carController.SetCoordinates(_coordinates);
+            this.carObject = carObject;
+            this.carObject.SetCoordinates(_coordinates);
         }
 
-        public void SetNullCar() => _carController = null;
-        public bool HasCar() => _carController;
-        public CarController GetCar() => _carController;
+        public void SetNullCar() => carObject = null;
+        public bool HasCar() => carObject;
+        public CarObject GetCar() => carObject;
         
         public GridSystem<GridObject> GetGridSystem => _gridSystem;
         public Vector2Int GetCoordinates() => _coordinates;
@@ -72,7 +72,7 @@ namespace Runtime.Systems.GridSystem
 
             if (HasCar())
             {
-                _carController.SetIsAvailableCar(_isWalkable);
+                carObject.SetIsAvailableCar(_isWalkable);
             }
         }
 

@@ -6,20 +6,22 @@ using Runtime.Events;
 using Runtime.Extensions;
 using Runtime.Objects;
 using Runtime.Systems.GridSystem;
+using Runtime.Systems.ObjectPool;
+using Runtime.Utilities;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace Runtime.Managers
 {
     public class LevelGridManager : MonoSingleton<LevelGridManager>
     {
+        [SerializeField] private Image backgroundImage;
+        
         [SerializeField] private Transform gridDebugObjectPrefab;
         [SerializeField] private Transform carPrefab;
         [SerializeField] private Transform obstaclePrefab;
         [SerializeField] private Transform carPlaceObjectPrefab;
-    
-        private readonly float _centerOfWidth = 540;
-        private readonly float _centerOfHeight = 720;
         
         private GridSystem<GridObject> _gridSystem;
         private LevelSO _currentLevel;
@@ -31,40 +33,38 @@ namespace Runtime.Managers
         private int _height;
         private Vector2 _cellSize;
         
-        protected override void Awake()
+        private void OnEnable()
         {
-            base.Awake();
+            CoreGameEvents.Instance.onLevelStart += OnLevelStart;
+            LevelGridEvents.Instance.onCarClicked += OnCarClicked;
+        }
+
+        private void OnLevelStart(int level)
+        {
             // TODO : CurrentLevelIndex
-            LoadResources();
+            LoadResources(level);
             InitializeGridSystem();
-
-#if UNITY_EDITOR
-            // _gridSystem.CreateDebugObjects(gridDebugObjectPrefab, carPrefab, transform);
-#endif
-
             CreateLevel();
         }
 
-        private void OnEnable()
+        private void OnCarClicked(CarObject carObject)
         {
-            CoreGameEvents.Instance.onCarClicked += OnCarClicked;
-        }
-        
-        private void OnCarClicked(CarController carController)
-        {
-            _carPlaceGrid.PlaceCarOnGrid(carController);
+            _carPlaceGrid.PlaceCarOnGrid(carObject);
         }
 
         private void OnDisable()
         {
-            CoreGameEvents.Instance.onCarClicked -= OnCarClicked;
+            CoreGameEvents.Instance.onLevelStart -= OnLevelStart;
+            LevelGridEvents.Instance.onCarClicked -= OnCarClicked;
         }
 
-        private void LoadResources()
+        private void LoadResources(int level)
         {
             // TODO : LevelManager for _currentLevel
-            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level22");
+            _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level" + level);
             _allCarsSOs = Resources.LoadAll<CarSO>("Data/CarSO").ToList();
+
+            backgroundImage.sprite = _currentLevel.BackgroundSprite;
         }
 
         private void InitializeGridSystem()
@@ -104,18 +104,16 @@ namespace Runtime.Managers
 
         private void PositionGridOnCanvas()
         {
-            // TODO : Refactor
-            
             float totalWidth = (_currentLevel.CarPlaceWidth-1) * _cellSize.x/2;
             float totalHeight = (_height+1) * _cellSize.y/2;
 
-            transform.position = new Vector3(_centerOfWidth - totalWidth, _centerOfHeight - totalHeight, 0f);
+            transform.position = new Vector3(ConstantsUtilities.CenterOfWidth - totalWidth, ConstantsUtilities.CenterOfHeight - totalHeight, 0f);
         }
-        private void SetGridTypes(IEnumerable<Vector2Int> coordinates, GridTypes type)
+        private void SetGridTypes(List<Vector2Int> coordinates, GridTypes type)
         {
-            foreach (var coord in coordinates)
+            foreach (var coordinate in coordinates)
             {
-                GetGridObject(new Vector2Int(coord.x, coord.y)).SetGridType(type);
+                GetGridObject(new Vector2Int(coordinate.x, coordinate.y)).SetGridType(type);
             }
         }
         private void InitializeCar(List<Vector2Int> coordinates, List<CarSO> carsSo)
@@ -130,9 +128,9 @@ namespace Runtime.Managers
             foreach (Vector2Int item in coordinates)
             {
                 Vector2Int gridPosition = new(item.x, item.y);
-                CarController carController = Instantiate(carPrefab, GetWorldPosition(gridPosition), Quaternion.identity, transform).GetComponent<CarController>();
-                SetCarAtGridPosition(gridPosition, carController);
-                carController.Initialize(carSo ,gridPosition, GetGridObject(gridPosition));
+                CarObject carObject = CarObjectObjPool.Instance.GetFromPool();
+                SetCarAtGridPosition(gridPosition, carObject);
+                carObject.Initialize(carSo ,gridPosition, GetGridObject(gridPosition), transform);
             }
         }
         private void InitializeObstacle(List<Vector2Int> coordinates)
@@ -154,7 +152,7 @@ namespace Runtime.Managers
             {
                 Vector2Int pos = new(i, 1);
                 
-                CoreGameEvents.Instance.onNewFreeSpace?.Invoke(pos);
+                LevelGridEvents.Instance.onNewFreeSpace?.Invoke(pos);
             }
         }
         private void InitializeCarPlace()
@@ -166,7 +164,7 @@ namespace Runtime.Managers
             }
         }
 
-        private void SetCarAtGridPosition(Vector2Int pos, CarController carController) => _gridSystem.GetGridObject(pos).SetCar(carController);
+        private void SetCarAtGridPosition(Vector2Int pos, CarObject carObject) => _gridSystem.GetGridObject(pos).SetCar(carObject);
         private GridObject GetGridObject(Vector2Int gridPosition) => _gridSystem.GetGridObject(gridPosition);
 
         public Vector3 GetWorldPosition(Vector2Int gridPos) => _gridSystem.GetWorldPosition(gridPos);

@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37404b157db9420da96cdd0e384e3aa5, type: 3}
+  m_Name: Level6
+  m_EditorClassIdentifier: 
+  LevelID: 0
+  LevelName: Level7
+  BackgroundSprite: {fileID: 2026800108, guid: 03d35de2310f89246a2c89055d670412, type: 3}
+  CarCount: 25
+  Width: 7
+  Height: 7
+  CellSize: {x: 80, y: 140}
+  obstacleCoordinates:
+  - {x: 0, y: 6}
+  - {x: 0, y: 5}
+  - {x: 1, y: 4}
+  - {x: 2, y: 3}
+  - {x: 4, y: 3}
+  - {x: 3, y: 2}
+  - {x: 6, y: 6}
+  - {x: 6, y: 5}
+  - {x: 5, y: 4}
+  - {x: 2, y: 8}
+  - {x: 4, y: 8}
+  - {x: 1, y: 7}
+  - {x: 3, y: 7}
+  - {x: 5, y: 7}
+  spaceCoordinates:
+  - {x: 1, y: 6}
+  - {x: 2, y: 6}
+  - {x: 3, y: 6}
+  - {x: 4, y: 6}
+  - {x: 1, y: 5}
+  - {x: 2, y: 5}
+  - {x: 3, y: 5}
+  - {x: 4, y: 5}
+  - {x: 2, y: 4}
+  - {x: 3, y: 4}
+  - {x: 4, y: 4}
+  - {x: 3, y: 3}
+  - {x: 5, y: 6}
+  - {x: 5, y: 5}
+  - {x: 0, y: 8}
+  - {x: 1, y: 8}
+  - {x: 3, y: 8}
+  - {x: 5, y: 8}
+  - {x: 6, y: 8}
+  - {x: 0, y: 7}
+  - {x: 2, y: 7}
+  - {x: 4, y: 7}
+  - {x: 6, y: 7}
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
+  - {x: 2, y: 0}
+  - {x: 2, y: 1}
+  - {x: 3, y: 0}
+  - {x: 3, y: 1}
+  - {x: 4, y: 0}
+  - {x: 4, y: 1}
+  - {x: 5, y: 0}
+  - {x: 5, y: 1}
+  - {x: 6, y: 0}
+  - {x: 6, y: 1}
+  color1Coordinates:
+  - {x: 0, y: 4}
+  - {x: 0, y: 3}
+  - {x: 0, y: 2}
+  color2Coordinates:
+  - {x: 6, y: 4}
+  - {x: 6, y: 3}
+  - {x: 6, y: 2}
+  color3Coordinates:
+  - {x: 4, y: 2}
+  - {x: 5, y: 3}
+  - {x: 5, y: 2}
+  color4Coordinates:
+  - {x: 1, y: 3}
+  - {x: 1, y: 2}
+  - {x: 2, y: 2}
+  color5Coordinates: []
+  CarPlaceWidth: 7
+  CarPlaceHeight: 1

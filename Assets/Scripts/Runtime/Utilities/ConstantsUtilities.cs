@@ -5,11 +5,25 @@ namespace Runtime.Utilities
     public static class ConstantsUtilities
     {
         
+#region Strings
+
+        public const string CURRENT_LEVEL_PLAYERPREFS = "CurrentLevelPrefs";
+
+#endregion
+
+#region Floats
+
+        public static readonly float CenterOfWidth = 540;
+        public static readonly float CenterOfHeight = 720;
+
+#endregion
+        
 #region Vectors
         
-        public static readonly Vector2 Zero2 = Vector2.zero;
-        
         public static readonly Vector3 Zero3 = Vector3.zero;
+        public static readonly Vector3 Right3 = Vector3.right;
+        public static readonly Vector3 Left3 = Vector3.left;
+        public static readonly Vector3 Up3 = Vector3.up;
         
 #endregion
 

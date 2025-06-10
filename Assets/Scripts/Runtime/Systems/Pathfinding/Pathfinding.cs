@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Runtime.Enums;
 using Runtime.Systems.GridSystem;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Runtime.Systems.Pathfinding
@@ -11,9 +12,14 @@ namespace Runtime.Systems.Pathfinding
         private static GridSystem<GridObject> _refGridSystem;
         private static List<PathNode> openList;
         private static List<PathNode> closedList;
+
+        private static int _width;
+        private static int _height;
         
         public Pathfinding(int width, int height, GridSystem<GridObject> refGridSystem)
         {
+            _width = width;
+            _height = height;
             _refGridSystem = refGridSystem;
             _gridSystem = new GridSystem<PathNode>(width, height, Vector2.zero, (GridSystem<PathNode> g, Vector2Int gridpos) => new PathNode(g,gridpos));
         }
@@ -88,19 +94,35 @@ namespace Runtime.Systems.Pathfinding
             
             if (currentNode.Position.x -1 >= 0) // Left
             {
-                neighbourList.Add(GetNode(currentNode.Position.x -1, currentNode.Position.y));
+                Vector2Int neighbourPosition = new Vector2Int(currentNode.Position.x -1, currentNode.Position.y);
+                if (IsValidPosition(neighbourPosition))
+                {
+                    neighbourList.Add(GetNode(neighbourPosition.x, neighbourPosition.y));
+                }
             }
             if (currentNode.Position.x +1 < _gridSystem.GetWidth()) // Right
             {
-                neighbourList.Add(GetNode(currentNode.Position.x +1, currentNode.Position.y));
+                Vector2Int neighbourPosition = new Vector2Int(currentNode.Position.x +1, currentNode.Position.y);
+                if (IsValidPosition(neighbourPosition))
+                {
+                    neighbourList.Add(GetNode(neighbourPosition.x, neighbourPosition.y));
+                }
             }
             if (currentNode.Position.y -1 >= 0) // Down
             {
-                neighbourList.Add(GetNode(currentNode.Position.x, currentNode.Position.y -1));
+                Vector2Int neighbourPosition = new Vector2Int(currentNode.Position.x, currentNode.Position.y -1);
+                if (IsValidPosition(neighbourPosition))
+                {
+                    neighbourList.Add(GetNode(neighbourPosition.x, neighbourPosition.y));
+                }
             }
             if (currentNode.Position.y +1 < _gridSystem.GetWidth()) // Up
             {
-                neighbourList.Add(GetNode(currentNode.Position.x, currentNode.Position.y +1));
+                Vector2Int neighbourPosition = new Vector2Int(currentNode.Position.x, currentNode.Position.y +1);
+                if (IsValidPosition(neighbourPosition))
+                {
+                    neighbourList.Add(GetNode(neighbourPosition.x, neighbourPosition.y));
+                }
             }
 
             return neighbourList;
@@ -148,5 +170,11 @@ namespace Runtime.Systems.Pathfinding
             
             return lowestFCostNode;
         }
+
+        private bool IsValidPosition(Vector2Int position)
+        {
+            return position.x >= 0 && position.y >= 0 && position.x < _width && position.y < _height;
+        }
+        
     }
 }
