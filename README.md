@@ -43,10 +43,20 @@
 
 ⚠️ **Note:** Colors in the level editor do **not** represent car colors.
 
+#### Color types are random, for example, color type 1 is determined randomly in the same level, so the color of the cars changes every time even though one level is the same.
+
+> For Example 
+
+<img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor_Product1.png" width="640px">
+
+<img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor_Product2.png" width="640px">
+
+<img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor_Product3.png" width="640px">
+
+- These three levels are the same level but look different, right?
+
 ---
 
-## 📸 Screenshots
+## Gameplay
 
-> *More visuals and demo gifs coming soon!*
-
----
+[Gameplay](https://www.youtube.com/shorts/XKGnSJ9dPrA)
