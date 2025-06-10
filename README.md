@@ -47,11 +47,11 @@
 
 > For Example 
 
-<img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor_Product1.png" width="640px">
+<img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor_Product1.png" width="480px">
 
-<img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor_Product2.png" width="640px">
+<img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor_Product2.png" width="480px">
 
-<img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor_Product3.png" width="640px">
+<img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor_Product3.png" width="480px">
 
 - These three levels are the same level but look different, right?
 
