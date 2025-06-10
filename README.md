@@ -33,7 +33,7 @@
 
 | Color  | Meaning                    |
 |:--------|:---------------------------|
-| 🩶 Gray   | Represents **Space**         |
+| ⚪ Gray   | Represents **Space**         |
 | ⚫ Black  | Represents **Obstacle**      |
 | 🔵 Blue   | Represents **ColorType1**    |
 | 🟢 Green  | Represents **ColorType2**    |
