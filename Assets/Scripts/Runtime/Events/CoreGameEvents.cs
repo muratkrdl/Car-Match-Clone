@@ -7,9 +7,12 @@ namespace Runtime.Events
     {
         public UnityAction onGameStart;
         public UnityAction onGameOver;
+        
         public UnityAction<int> onLevelStart;
+        
         public UnityAction onLevelFinish;
         public UnityAction onLevelSuccess;
         public UnityAction onLevelFailed;
+        public UnityAction onReset;
     }
 }
