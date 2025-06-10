@@ -60,5 +60,5 @@
   
 > Represents ColorType5
 
-
+**Colors in the level editor do not represent car colors**
 
