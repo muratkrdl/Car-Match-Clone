@@ -1,64 +1,52 @@
-# Car-Match-Clone
+# 🚗 Car Match Clone
 
-# About game
+---
 
-- This is a Match 3 Game
+## 📖 About the Game
 
-- Main goal is to complete the level
+- 🎮 This is a **Match-3 Game**.
+- 🎯 The main goal is to **complete the level**.
+- 🅿️ There are **7 places** where you can place cars.
+- 🚗 Every car you click moves to these places.
+- 💥 If you place **3 cars of the same color**, they **blast**.
+- ❌ If you fill all **7 places without matching**, you **lose**.
+- 🏆 If you match all cars and clear the board, you **win**.
 
-- There are 7 places for cars
+---
 
-- Every car you click moves to these places
+## 🛠️ Level Editor Mechanic
 
-- If you place 3 cars of the same color in these places, these cars will blast.
-  
-- If you fill all 7 places, you lose
-  
-- If you match all the cars and make them blast, you win.
-
-# Level Editor Mechanic
-
-## This is Level Editor Panel
+### 🎨 Level Editor Panel
 
 <img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor.png" width="640px">
 
-### Grid Width
+---
 
-- Grid width is the horizontal width of the level
+### 📏 Grid Settings
 
-### Grid Height
+- **Grid Width:** Number of columns in the level.
+- **Grid Height:** Number of rows in the level.
 
-- Grid height is the vertical height of the level
+---
 
-### Meaning of colors
+### 🎨 Meaning of Colors
 
-- Gray Color
-  
-> Represents space
+| Color  | Meaning                    |
+|:--------|:---------------------------|
+| 🩶 Gray   | Represents **Space**         |
+| ⚫ Black  | Represents **Obstacle**      |
+| 🔵 Blue   | Represents **ColorType1**    |
+| 🟢 Green  | Represents **ColorType2**    |
+| 🟣 Purple | Represents **ColorType3**    |
+| 🔴 Red    | Represents **ColorType4**    |
+| 🟡 Yellow | Represents **ColorType5**    |
 
-- Black Color
-  
-> Represents Obstacle
+> ⚠️ **Note:** Colors in the level editor do **not** represent car colors.
 
-- Blue Color
-  
-> Represents ColorType1
+---
 
-- Green Color
-  
-> Represents ColorType2
+## 📸 Screenshots
 
-- Purple Color
-  
-> Represents ColorType3
+> *More visuals and demo gifs coming soon!*
 
-- Red Color
-  
-> Represents ColorType4
-
-- Yellow Color
-  
-> Represents ColorType5
-
-**Colors in the level editor do not represent car colors**
-
+---
