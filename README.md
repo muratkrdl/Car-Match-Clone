@@ -34,29 +34,31 @@
 
 - Gray Color
   
->
+> Represents space
 
 - Black Color
   
->
+> Represents Obstacle
 
 - Blue Color
   
->
+> Represents ColorType1
 
 - Green Color
   
->
+> Represents ColorType2
 
 - Purple Color
   
->
+> Represents ColorType3
 
 - Red Color
   
->
+> Represents ColorType4
 
 - Yellow Color
   
->
+> Represents ColorType5
+
+
 
