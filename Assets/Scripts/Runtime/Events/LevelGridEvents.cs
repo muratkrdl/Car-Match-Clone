@@ -7,7 +7,6 @@ namespace Runtime.Events
 {
     public class LevelGridEvents : MonoSingleton<LevelGridEvents>
     {
-                
         public UnityAction<Vector2Int> onNewFreeSpace;
         public UnityAction<CarObject> onCarClicked;
     }

@@ -15,6 +15,32 @@ namespace Runtime.Objects.Panels
             _buttons[2].onClick.AddListener(OnClick_Forward);
         }
 
+        private void OnClick_Menu()
+        {
+            if (_clickedButton) return;
+            
+            _clickedButton = true;
+            CoreGameEvents.Instance.onGameOver?.Invoke();
+        }
+
+        private void OnClick_Reset()
+        {
+            if (_clickedButton) return;
+            
+            _clickedButton = true;
+            CoreGameEvents.Instance.onLoadLevel?.Invoke();
+            CoreUIEvents.Instance.onClosePanel?.Invoke(2);
+        }
+
+        private void OnClick_Forward()
+        {
+            if (_clickedButton) return;
+            
+            _clickedButton = true;
+            CoreGameEvents.Instance.onLoadLevel?.Invoke();
+            CoreUIEvents.Instance.onClosePanel?.Invoke(2);
+        }
+        
         public override void OpenPanel()
         {
             transform.DOScale(ConstantsUtilities.One3, _data.AnimationDuration).SetEase(_data.AnimationEase);
@@ -25,23 +51,6 @@ namespace Runtime.Objects.Panels
             transform.DOScale(ConstantsUtilities.Zero3, _data.AnimationDuration)
                 .SetEase(_data.AnimationEase)
                 .OnComplete(OnClosePanel);
-        }
-        
-        private void OnClick_Menu()
-        {
-            
-        }
-
-        private void OnClick_Reset()
-        {
-            CoreGameEvents.Instance.onLoadLevel?.Invoke();
-            CoreUIEvents.Instance.onClosePanel?.Invoke(2);
-        }
-
-        private void OnClick_Forward()
-        {
-            CoreGameEvents.Instance.onLoadLevel?.Invoke();
-            CoreUIEvents.Instance.onClosePanel?.Invoke(2);
         }
         
     }

@@ -17,6 +17,7 @@ namespace Runtime.Managers
         protected override void Awake()
         {
             _maxLevelCount = Resources.LoadAll<LevelSO>("Data/LevelSO").ToList().Count;
+            _currentLevel = 3;
             _currentLevel = PlayerPrefs.GetInt(ConstantsUtilities.CURRENT_LEVEL_PLAYERPREFS);
         }
 

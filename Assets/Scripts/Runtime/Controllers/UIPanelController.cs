@@ -40,7 +40,6 @@ namespace Runtime.Controllers
         {
             for (int i = 0; i < layers.Count; i++)
             {
-                if (layers[i].childCount <= 0) return;
                 OnClosePanel(i);
             }
         }

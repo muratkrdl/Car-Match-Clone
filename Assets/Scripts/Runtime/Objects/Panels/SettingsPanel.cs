@@ -19,21 +19,12 @@ namespace Runtime.Objects.Panels
             _sliders[0].onValueChanged.AddListener(OnValueChanged_Music);
             _sliders[1].onValueChanged.AddListener(OnValueChanged_SFX);
         }
-
-        public override void OpenPanel()
-        {
-            transform.DOScale(ConstantsUtilities.One3, _data.AnimationDuration).SetEase(_data.AnimationEase);
-        }
-
-        public override void ClosePanel()
-        {
-            transform.DOScale(ConstantsUtilities.Zero3, _data.AnimationDuration)
-                .SetEase(_data.AnimationEase)
-                .OnComplete(OnClosePanel);
-        }
-
+        
         private void OnClick_ClosePanel()
         {
+            if (_clickedButton) return;
+            
+            _clickedButton = true;
             CoreUIEvents.Instance.onClosePanel?.Invoke(1);
         }
 
@@ -45,6 +36,18 @@ namespace Runtime.Objects.Panels
         private void OnValueChanged_Music(float value)
         {
             
+        }
+
+        public override void OpenPanel()
+        {
+            transform.DOScale(ConstantsUtilities.One3, _data.AnimationDuration).SetEase(_data.AnimationEase);
+        }
+
+        public override void ClosePanel()
+        {
+            transform.DOScale(ConstantsUtilities.Zero3, _data.AnimationDuration)
+                .SetEase(_data.AnimationEase)
+                .OnComplete(OnClosePanel);
         }
         
     }

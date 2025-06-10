@@ -120,7 +120,12 @@ namespace Runtime.Objects
         public void SetCoordinates(Vector2Int coordinates) => _coordinates = coordinates;
 
         public void SetPool(ObjectPool<CarObject> pool) => _pool = pool;
-        public void ReleasePool() => _pool.Release(this);
+
+        public void ReleasePool()
+        {
+            _gridObject = null;
+            _pool.Release(this);
+        }
 
     }
 }

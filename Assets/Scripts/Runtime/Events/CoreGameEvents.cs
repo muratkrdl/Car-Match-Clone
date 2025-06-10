@@ -11,7 +11,6 @@ namespace Runtime.Events
         public UnityAction<int> onLevelStart;
         public UnityAction<int> onLevelInitialize;
         
-        public UnityAction onLevelFinish;
         public UnityAction onLevelSuccess;
         public UnityAction onLevelSucceeded;
         public UnityAction onLevelFailed;

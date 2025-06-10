@@ -15,6 +15,31 @@ namespace Runtime.Objects.Panels
             _buttons[2].onClick.AddListener(OnClick_Quit);
         }
 
+        private void OnClick_Resume()
+        {
+            if (_clickedButton) return;
+            
+            _clickedButton = true;
+            CoreUIEvents.Instance.onClosePanel?.Invoke(4);
+        }
+
+        private void OnClick_Restart()
+        {
+            if (_clickedButton) return;
+            
+            _clickedButton = true;
+            CoreGameEvents.Instance.onLoadLevel?.Invoke();
+            CoreUIEvents.Instance.onClosePanel?.Invoke(4);
+        }
+
+        private void OnClick_Quit()
+        {
+            if (_clickedButton) return;
+            
+            _clickedButton = true;
+            CoreGameEvents.Instance.onGameOver?.Invoke();
+        }
+        
         public override void OpenPanel()
         {
             transform.DOScale(ConstantsUtilities.One3, _data.AnimationDuration).SetEase(_data.AnimationEase);
@@ -25,23 +50,6 @@ namespace Runtime.Objects.Panels
             transform.DOScale(ConstantsUtilities.Zero3, _data.AnimationDuration)
                 .SetEase(_data.AnimationEase)
                 .OnComplete(OnClosePanel);
-        }
-
-        private void OnClick_Resume()
-        {
-            CoreUIEvents.Instance.onClosePanel?.Invoke(4);
-        }
-
-        private void OnClick_Restart()
-        {
-            CoreGameEvents.Instance.onLoadLevel?.Invoke();
-            CoreUIEvents.Instance.onClosePanel?.Invoke(4);
-        }
-
-        private void OnClick_Quit()
-        {
-            CoreGameEvents.Instance.onLoadLevel?.Invoke();
-            CoreUIEvents.Instance.onClosePanel?.Invoke(4);
         }
         
     }

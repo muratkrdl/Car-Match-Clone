@@ -12,6 +12,8 @@ namespace Runtime.Abstracts.Classes
         [SerializeField] protected Button[] _buttons;
         [SerializeField] protected PanelTypes _panelType;
         
+        protected bool _clickedButton = false;
+        
         protected PanelPopUpData _data;
         
         protected virtual void Awake()

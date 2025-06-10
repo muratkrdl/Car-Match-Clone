@@ -16,6 +16,25 @@ namespace Runtime.Objects.Panels
             _buttons[2].onClick.AddListener(OnClick_Quit);
         }
 
+        private void OnClick_Start()
+        {
+            if (_clickedButton) return;
+            
+            _clickedButton = true;
+            LevelManager.Instance.OnLevelStart();
+        }
+        private void OnClick_Settings()
+        {
+            CoreUIEvents.Instance.onOpenPanel?.Invoke(PanelTypes.Settings, 1);
+        }
+        
+        private void OnClick_Quit()
+        {
+            if (_clickedButton) return;
+            
+            _clickedButton = true;
+            CoreGameEvents.Instance.onQuitGame?.Invoke();
+        }
         public override void OpenPanel()
         {
             transform.localScale = ConstantsUtilities.One3;
@@ -24,19 +43,6 @@ namespace Runtime.Objects.Panels
         public override void ClosePanel()
         {
             OnClosePanel();
-        }
-        
-        private void OnClick_Start()
-        {
-            LevelManager.Instance.OnLevelStart();
-        }
-        private void OnClick_Settings()
-        {
-            CoreUIEvents.Instance.onOpenPanel?.Invoke(PanelTypes.Settings, 1);
-        }
-        private void OnClick_Quit()
-        {
-            CoreGameEvents.Instance.onQuitGame?.Invoke();
         }
         
     }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Runtime.Data.UnityObject;
 using Runtime.Data.UnityObject.SO;
 using Runtime.Events;
 using Runtime.Keys;
@@ -18,6 +17,8 @@ namespace Runtime.Systems.GridSystem
         private List<GridObject> _carPlaceGrid = new List<GridObject>();
 
         private Systems.Pathfinding.Pathfinding _pathfinding;
+
+        private bool _gameHasFinished = false;
         
         public CarPlaceGrid(GridSystem<GridObject> gridSystem, LevelSO currentLevel)
         {
@@ -30,6 +31,13 @@ namespace Runtime.Systems.GridSystem
             {
                 _carPlaceGrid.Add(_gridSystem.GetGridObject(new Vector2Int(i,0)));
             }
+        }
+
+        public void OnReset()
+        {
+            _carPlaceGrid.Clear();
+            _carPlaceGrid = new List<GridObject>();
+            _gridSystem = null;
         }
 
         public void PlaceCarOnGrid(CarObject carObject)
@@ -91,8 +99,9 @@ namespace Runtime.Systems.GridSystem
             {
                 carMoveParams.CarObject.MoveToGridPosition(GetPath(carMoveParams.From, carMoveParams.To), () =>
                 {
-                    if (!HasAvailableSlot())
+                    if (!HasAvailableSlot() && !_gameHasFinished)
                     {
+                        _gameHasFinished = true;
                         CoreGameEvents.Instance.onLevelFailed?.Invoke();
                     }
                 });
@@ -200,6 +209,8 @@ namespace Runtime.Systems.GridSystem
 
         private bool CheckLevelSuccess()
         {
+            if (_gameHasFinished) return false;
+
             foreach (var item in _gridSystem.GetFlatGridObjectArray())
             {
                 if (item.HasCar())
@@ -208,6 +219,7 @@ namespace Runtime.Systems.GridSystem
                 }
             }
 
+            _gameHasFinished = true;
             return true;
         }
 

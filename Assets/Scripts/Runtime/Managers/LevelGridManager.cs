@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Runtime.Data.UnityObject.SO;
@@ -39,12 +40,25 @@ namespace Runtime.Managers
             CoreGameEvents.Instance.onLevelInitialize += OnLevelInitialize;
             CoreGameEvents.Instance.onResetLevel += OnResetLevel;
             LevelGridEvents.Instance.onCarClicked += OnCarClicked;
+            LevelGridEvents.Instance.onNewFreeSpace += OnNewFreeSpace;
             _allCarsSOs = Resources.LoadAll<CarSO>("Data/CarSO").ToList();
+        }
+
+        private void OnNewFreeSpace(Vector2Int arg0)
+        {
+            foreach (var item in _gridSystem.GetFlatGridObjectArray())
+            {
+                item.OnNewFreeSpace(arg0);
+            }
         }
 
         private void OnLevelInitialize(int level)
         {
             // TODO : CurrentLevelIndex
+            _carPlaceGrid?.OnReset();
+            _gridSystem?.Clear();
+            _gridSystem = null;
+            _carPlaceGrid = null;
             LoadResources(level);
             InitializeGridSystem();
             CreateLevel();
@@ -65,6 +79,7 @@ namespace Runtime.Managers
             CoreGameEvents.Instance.onLevelInitialize -= OnLevelInitialize;
             CoreGameEvents.Instance.onResetLevel -= OnResetLevel;
             LevelGridEvents.Instance.onCarClicked -= OnCarClicked;
+            LevelGridEvents.Instance.onNewFreeSpace -= OnNewFreeSpace;
         }
 
         private void LoadResources(int level)

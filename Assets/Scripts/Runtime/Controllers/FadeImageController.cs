@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Runtime.Data.UnityObject;
 using Runtime.Data.ValueObject;
+using Runtime.Enums;
 using Runtime.Events;
 using Runtime.Managers;
 using Runtime.Utilities;
@@ -27,6 +28,18 @@ namespace Runtime.Controllers
             CoreGameEvents.Instance.onLevelStart += OnLevelStart;
             CoreGameEvents.Instance.onQuitGame += OnQuitGame;
             CoreGameEvents.Instance.onLoadLevel += OnLoadLevel;
+            CoreGameEvents.Instance.onGameOver += OnGameOver;
+        }
+
+        private void OnGameOver()
+        {
+            DoFadeScreen(_data.NormalColor, _data.FadeDuration, () =>
+            {
+                CoreGameEvents.Instance.onResetLevel?.Invoke();
+                CoreUIEvents.Instance.onCloseAllPanels?.Invoke();
+                CoreUIEvents.Instance.onOpenPanel?.Invoke(PanelTypes.MainMenu, 0);
+                DoFadeScreenDelayed(_data.FadeColor, _data.FadeDuration).Forget();
+            });
         }
 
         private void OnLoadLevel()

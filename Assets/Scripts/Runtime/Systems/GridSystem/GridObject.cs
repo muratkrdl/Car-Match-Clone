@@ -20,11 +20,9 @@ namespace Runtime.Systems.GridSystem
             _coordinates = coordinates;
             
             SetIsWalkable(false);
-            
-            LevelGridEvents.Instance.onNewFreeSpace += OnNewFreeSpace;
         }
         
-        private void OnNewFreeSpace(Vector2Int pos)
+        public void OnNewFreeSpace(Vector2Int pos)
         {
             if (!IsNearBy(pos) || _isWalkable) return;
 

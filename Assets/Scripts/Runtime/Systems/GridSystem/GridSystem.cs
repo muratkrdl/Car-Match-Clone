@@ -80,6 +80,20 @@ namespace Runtime.Systems.GridSystem
             return flatArray;
         }
         
+        public void Clear()
+        {
+            for (int x = 0; x < gridObjectArray.GetLength(0); x++)
+            {
+                for (int y = 0; y < gridObjectArray.GetLength(1); y++)
+                {
+                    gridObjectArray[x, y] = default;
+                }
+            }
+
+            gridObjectArray = null;
+            GC.Collect();
+        }
+
         public void CreateDebugObjects(Transform debugPrefab, Transform carPrefab, Transform parent = null)
         {
             for(int x = 0; x < width; x++)
