@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Runtime.Abstracts.Classes;
 using Runtime.Enums;
 using Runtime.Events;
 using UnityEngine;
@@ -20,26 +21,28 @@ namespace Runtime.Controllers
             CoreUIEvents.Instance.onClosePanel += OnClosePanel;
             CoreUIEvents.Instance.onCloseAllPanels += OnCloseAllPanels;
         }
-
-        private void OnCloseAllPanels()
-        {
-            foreach (var layer in layers)
-            {
-                if (layer.childCount <= 0) return;
-                Destroy(layer.GetChild(0).gameObject);
-            }
-        }
-
-        private void OnClosePanel(int value)
-        {
-            if (layers[value].childCount <= 0) return;
-            Destroy(layers[value].GetChild(0).gameObject);
-        }
-
+        
         private void OnOpenPanel(PanelTypes panelType, int layer)
         {
             OnClosePanel(layer);
-            Instantiate(Resources.Load<GameObject>($"UIPanels/{panelType}Panel"), layers[layer]);
+            var panel = Instantiate(Resources.Load<GameObject>($"UIPanels/{panelType}Panel"), layers[layer]).GetComponent<BasePanel>();
+            panel.OpenPanel();
+        }
+        
+        private void OnClosePanel(int value)
+        {
+            if (layers[value].childCount <= 0) return;
+            var panel = layers[value].GetChild(0).GetComponent<BasePanel>();
+            panel.ClosePanel();
+        }
+
+        private void OnCloseAllPanels()
+        {
+            for (int i = 0; i < layers.Count; i++)
+            {
+                if (layers[i].childCount <= 0) return;
+                OnClosePanel(i);
+            }
         }
         
         private void UnSubscribeEvents()
@@ -52,6 +55,12 @@ namespace Runtime.Controllers
         private void OnDisable()
         {
             UnSubscribeEvents();
+        }
+
+        private void Start()
+        {
+            CoreGameEvents.Instance.onGameStart?.Invoke();
+            CoreUIEvents.Instance.onOpenPanel?.Invoke(PanelTypes.MainMenu, 0);
         }
         
     }

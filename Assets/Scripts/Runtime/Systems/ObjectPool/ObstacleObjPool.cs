@@ -3,15 +3,15 @@ using Runtime.Utilities;
 
 namespace Runtime.Systems.ObjectPool
 {
-    public class CarObjectObjPool : BaseObjectPool<CarObject,CarObjectObjPool>
+    public class ObstacleObjPool : BaseObjectPool<ObstacleObject, ObstacleObjPool>
     {
-        protected override void OnGet(CarObject obj)
+        protected override void OnGet(ObstacleObject obj)
         {
             base.OnGet(obj);
             obj.transform.localScale = ConstantsUtilities.One3;
         }
 
-        protected override void OnRelease(CarObject obj)
+        protected override void OnRelease(ObstacleObject obj)
         {
             base.OnRelease(obj);
             obj.transform.SetParent(transform);

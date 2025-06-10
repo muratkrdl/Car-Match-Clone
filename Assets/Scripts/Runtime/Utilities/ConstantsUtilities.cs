@@ -20,6 +20,7 @@ namespace Runtime.Utilities
         
 #region Vectors
         
+        public static readonly Vector3 One3 = Vector3.one;
         public static readonly Vector3 Zero3 = Vector3.zero;
         public static readonly Vector3 Right3 = Vector3.right;
         public static readonly Vector3 Left3 = Vector3.left;

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Runtime.Data.UnityObject;
+using Runtime.Data.UnityObject.SO;
 using Runtime.Enums;
 using Runtime.Events;
 using Runtime.Extensions;
@@ -29,22 +29,30 @@ namespace Runtime.Managers
 
         private CarPlaceGrid _carPlaceGrid;
 
+        private int _currentLevelID;
         private int _width;
         private int _height;
         private Vector2 _cellSize;
-        
+
         private void OnEnable()
         {
-            CoreGameEvents.Instance.onLevelStart += OnLevelStart;
+            CoreGameEvents.Instance.onLevelInitialize += OnLevelInitialize;
+            CoreGameEvents.Instance.onResetLevel += OnResetLevel;
             LevelGridEvents.Instance.onCarClicked += OnCarClicked;
+            _allCarsSOs = Resources.LoadAll<CarSO>("Data/CarSO").ToList();
         }
 
-        private void OnLevelStart(int level)
+        private void OnLevelInitialize(int level)
         {
             // TODO : CurrentLevelIndex
             LoadResources(level);
             InitializeGridSystem();
             CreateLevel();
+        }
+        
+        private void OnResetLevel()
+        {
+            transform.position = ConstantsUtilities.Zero3;
         }
 
         private void OnCarClicked(CarObject carObject)
@@ -54,15 +62,16 @@ namespace Runtime.Managers
 
         private void OnDisable()
         {
-            CoreGameEvents.Instance.onLevelStart -= OnLevelStart;
+            CoreGameEvents.Instance.onLevelInitialize -= OnLevelInitialize;
+            CoreGameEvents.Instance.onResetLevel -= OnResetLevel;
             LevelGridEvents.Instance.onCarClicked -= OnCarClicked;
         }
 
         private void LoadResources(int level)
         {
             // TODO : LevelManager for _currentLevel
+            _currentLevelID = level;
             _currentLevel = Resources.Load<LevelSO>("Data/LevelSO/Level" + level);
-            _allCarsSOs = Resources.LoadAll<CarSO>("Data/CarSO").ToList();
 
             backgroundImage.sprite = _currentLevel.BackgroundSprite;
         }
@@ -140,7 +149,8 @@ namespace Runtime.Managers
             foreach (Vector2Int item in coordinates)
             {
                 Vector2Int gridPosition = new(item.x, item.y);
-                Instantiate(obstaclePrefab, GetWorldPosition(gridPosition), Quaternion.identity, transform);
+                ObstacleObject obstacleObject = ObstacleObjPool.Instance.GetFromPool();
+                obstacleObject.Initialize(GetWorldPosition(gridPosition), transform);
             }
         }
         private void InitializeSpaces(List<Vector2Int> coordinates)
@@ -160,7 +170,8 @@ namespace Runtime.Managers
             for (int i = 0; i < _currentLevel.CarPlaceWidth; i++)
             {
                 Vector2Int gridPosition = new(i, 0);
-                Instantiate(carPlaceObjectPrefab, GetWorldPosition(gridPosition), Quaternion.identity, transform);
+                CarPlaceObject carPlaceObject = CarPlaceObjPool.Instance.GetFromPool();
+                carPlaceObject.Initialize(GetWorldPosition(gridPosition), transform);
             }
         }
 

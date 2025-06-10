@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Runtime.Data.UnityObject;
+using Runtime.Data.UnityObject.SO;
 using Runtime.Events;
 using Runtime.Keys;
 using Runtime.Objects;
@@ -88,7 +89,13 @@ namespace Runtime.Systems.GridSystem
             }
             else
             {
-                carMoveParams.CarObject.MoveToGridPosition(GetPath(carMoveParams.From, carMoveParams.To));
+                carMoveParams.CarObject.MoveToGridPosition(GetPath(carMoveParams.From, carMoveParams.To), () =>
+                {
+                    if (!HasAvailableSlot())
+                    {
+                        CoreGameEvents.Instance.onLevelFailed?.Invoke();
+                    }
+                });
             }
         }
 
@@ -122,6 +129,11 @@ namespace Runtime.Systems.GridSystem
                 }
                 if (_gridSystem.GetGridObject(move.To).GetCar() != move.CarObject) continue;
                 move.CarObject.MoveSingleToGridPosition(move.From, move.To);
+            }
+
+            if (CheckLevelSuccess())
+            {
+                CoreGameEvents.Instance.onLevelSuccess?.Invoke();
             }
         }
 
@@ -184,6 +196,19 @@ namespace Runtime.Systems.GridSystem
             }
 
             return result;
+        }
+
+        private bool CheckLevelSuccess()
+        {
+            foreach (var item in _gridSystem.GetFlatGridObjectArray())
+            {
+                if (item.HasCar())
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private bool IsValidGridPosition(Vector2Int gridPosition) => _gridSystem.IsValidGridPosition(gridPosition) && _carPlaceGrid.Contains(_gridSystem.GetGridObject(gridPosition));

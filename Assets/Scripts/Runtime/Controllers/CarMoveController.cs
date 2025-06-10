@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Runtime.Data.UnityObject;
 using Runtime.Data.ValueObject;
+using Runtime.Data.ValueObject.Car;
 using Runtime.Managers;
 using Runtime.Objects;
 using Runtime.Utilities;

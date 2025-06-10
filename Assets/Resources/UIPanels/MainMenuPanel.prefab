@@ -204,6 +204,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6831222426704387572}
+  - component: {fileID: 4619585183910453727}
   m_Layer: 5
   m_Name: MainMenuPanel
   m_TagString: Untagged
@@ -220,7 +221,7 @@ RectTransform:
   m_GameObject: {fileID: 1909576146062641776}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7991906911866019562}
@@ -235,6 +236,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4619585183910453727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909576146062641776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7411d865c33a40e69ecb0a48a1176698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttons:
+  - {fileID: 2200129004910246913}
+  - {fileID: 8884174464493106816}
+  - {fileID: 8261882576814514360}
+  _panelType: 0
 --- !u!1 &2532979611426107894
 GameObject:
   m_ObjectHideFlags: 0

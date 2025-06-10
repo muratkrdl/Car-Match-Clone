@@ -15,7 +15,6 @@ namespace Runtime.Managers
         {
             CoreGameEvents.Instance.onLevelSuccess += OnLevelSuccess;
             CoreGameEvents.Instance.onLevelFailed += OnLevelFailed;
-            CoreGameEvents.Instance.onReset += OnReset;
         }
 
         private void OnLevelFailed()
@@ -38,7 +37,6 @@ namespace Runtime.Managers
         {
             CoreGameEvents.Instance.onLevelSuccess -= OnLevelSuccess;
             CoreGameEvents.Instance.onLevelFailed -= OnLevelFailed;
-            CoreGameEvents.Instance.onReset -= OnReset;
         }
 
         private void OnDisable()

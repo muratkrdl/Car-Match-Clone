@@ -1,6 +1,6 @@
 using System;
 
-namespace Runtime.Data.ValueObject
+namespace Runtime.Data.ValueObject.Car
 {
     [Serializable]
     public struct CarMoveData

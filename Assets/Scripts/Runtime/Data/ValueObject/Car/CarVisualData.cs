@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Runtime.Data.ValueObject
+namespace Runtime.Data.ValueObject.Car
 {
     [Serializable]
     public struct CarVisualData

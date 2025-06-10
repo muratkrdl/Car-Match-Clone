@@ -1,5 +1,6 @@
 using System.Linq;
 using Runtime.Data.UnityObject;
+using Runtime.Data.UnityObject.SO;
 using Runtime.Events;
 using Runtime.Extensions;
 using Runtime.Utilities;
@@ -19,32 +20,33 @@ namespace Runtime.Managers
             _currentLevel = PlayerPrefs.GetInt(ConstantsUtilities.CURRENT_LEVEL_PLAYERPREFS);
         }
 
-        private void Update()
+        public void OnLevelStart()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                CoreGameEvents.Instance.onLevelStart?.Invoke(_currentLevel);
-            }
+            CoreGameEvents.Instance.onLevelStart?.Invoke(_currentLevel);
         }
 
         private void OnEnable()
         {
-            CoreGameEvents.Instance.onLevelSuccess += OnLevelSuccess;
+            CoreGameEvents.Instance.onLevelSucceeded += OnLevelSucceeded;
         }
 
-        private void OnLevelSuccess()
+        private void OnLevelSucceeded()
         {
             _currentLevel++;
             if (_currentLevel >= _maxLevelCount)
             {
                 _currentLevel = 0;
             }
-            PlayerPrefs.SetInt(ConstantsUtilities.CURRENT_LEVEL_PLAYERPREFS, _currentLevel);
         }
 
         private void OnDisable()
         {
-            CoreGameEvents.Instance.onLevelSuccess -= OnLevelSuccess;
+            CoreGameEvents.Instance.onLevelSuccess -= OnLevelSucceeded;
+        }
+
+        private void OnDestroy()
+        {
+            PlayerPrefs.SetInt(ConstantsUtilities.CURRENT_LEVEL_PLAYERPREFS, _currentLevel);
         }
         
     }

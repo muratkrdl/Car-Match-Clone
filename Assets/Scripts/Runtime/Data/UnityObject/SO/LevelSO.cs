@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Runtime.Data.UnityObject
+namespace Runtime.Data.UnityObject.SO
 {
     [CreateAssetMenu(fileName = "LevelSO", menuName = "SO/LevelSO", order = 0)]
     public class LevelSO : ScriptableObject

@@ -1,4 +1,5 @@
 using Runtime.Data.ValueObject;
+using Runtime.Data.ValueObject.Car;
 using UnityEngine;
 
 namespace Runtime.Data.UnityObject

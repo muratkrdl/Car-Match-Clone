@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Runtime.Controllers;
 using Runtime.Data.UnityObject;
+using Runtime.Data.UnityObject.SO;
 using Runtime.Data.ValueObject;
+using Runtime.Data.ValueObject.Car;
 using Runtime.Events;
 using Runtime.Managers;
 using Runtime.Systems.GridSystem;
@@ -38,6 +41,16 @@ namespace Runtime.Objects
             GetReferences();
             GetData();
             _button.onClick.AddListener(OnClick_Button);
+        }
+
+        private void OnEnable()
+        {
+            CoreGameEvents.Instance.onResetLevel += ReleasePool;
+        }
+
+        private void OnDisable()
+        {
+            CoreGameEvents.Instance.onResetLevel -= ReleasePool;
         }
 
         private void GetReferences()

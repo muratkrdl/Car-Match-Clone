@@ -1,7 +1,7 @@
 using Runtime.Enums;
 using UnityEngine;
 
-namespace Runtime.Data.UnityObject
+namespace Runtime.Data.UnityObject.SO
 {
     [CreateAssetMenu(fileName = "CarSO", menuName = "SO/CarSO")]
     public class CarSO : ScriptableObject
