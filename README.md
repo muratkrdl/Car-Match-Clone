@@ -18,6 +18,45 @@
 
 # Level Editor Mechanic
 
-### This is Level Editor Panel
+## This is Level Editor Panel
 
 <img src="https://github.com/muratkrdl/Car-Match-Clone/blob/main/SS/LevelEditor.png" width="640px">
+
+### Grid Width
+
+- Grid width is the horizontal width of the level
+
+### Grid Height
+
+- Grid height is the vertical height of the level
+
+### Meaning of colors
+
+- Gray Color
+  
+>
+
+- Black Color
+  
+>
+
+- Blue Color
+  
+>
+
+- Green Color
+  
+>
+
+- Purple Color
+  
+>
+
+- Red Color
+  
+>
+
+- Yellow Color
+  
+>
+
