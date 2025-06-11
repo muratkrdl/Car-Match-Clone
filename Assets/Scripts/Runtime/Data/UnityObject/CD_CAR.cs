@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Runtime.Data.UnityObject
 {
+    /// <summary>
+    /// ScriptableObject representing the data for a car object
+    /// </summary>
     [CreateAssetMenu(fileName = "CD_CAR", menuName = "Data/CD_CAR")]
     public class CD_CAR : ScriptableObject
     {

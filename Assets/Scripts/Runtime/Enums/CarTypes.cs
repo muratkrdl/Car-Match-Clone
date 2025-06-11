@@ -1,5 +1,8 @@
 namespace Runtime.Enums
 {
+    /// <summary>
+    /// Enumeration representing the different car types
+    /// </summary>
     public enum CarTypes
     {
         None,

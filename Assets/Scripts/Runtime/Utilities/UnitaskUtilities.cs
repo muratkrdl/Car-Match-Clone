@@ -4,6 +4,9 @@ using Cysharp.Threading.Tasks;
 
 namespace Runtime.Utilities
 {
+    /// <summary>
+    /// Helper methods for UniTask.
+    /// </summary>
     public static class UnitaskUtilities
     {
         public static UniTask WaitForSecondsAsync(float time)

@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Runtime.Data.ValueObject
 {
+    /// <summary>
+    /// Fade Image Data
+    /// </summary>
     [Serializable]
     public struct FadeImageData
     {

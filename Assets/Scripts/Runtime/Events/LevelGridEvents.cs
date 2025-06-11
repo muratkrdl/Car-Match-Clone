@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 namespace Runtime.Events
 {
+    /// <summary>
+    /// Manages level grid event actions
+    /// </summary>
     public class LevelGridEvents : MonoSingleton<LevelGridEvents>
     {
         public UnityAction<Vector2Int> onNewFreeSpace;

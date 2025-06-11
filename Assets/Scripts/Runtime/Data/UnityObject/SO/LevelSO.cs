@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Runtime.Data.UnityObject.SO
 {
+    /// <summary>
+    /// ScriptableObject representing the data for a game level
+    /// </summary>
     [CreateAssetMenu(fileName = "LevelSO", menuName = "SO/LevelSO", order = 0)]
     public class LevelSO : ScriptableObject
     {

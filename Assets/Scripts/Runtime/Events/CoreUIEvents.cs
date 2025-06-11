@@ -4,6 +4,9 @@ using UnityEngine.Events;
 
 namespace Runtime.Events
 {
+    /// <summary>
+    /// Manages core UI event actions
+    /// </summary>
     public class CoreUIEvents : MonoSingleton<CoreUIEvents>
     {
         public UnityAction<PanelTypes, int> onOpenPanel;

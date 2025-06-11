@@ -2,6 +2,9 @@ using System;
 
 namespace Runtime.Data.ValueObject.Car
 {
+    /// <summary>
+    /// Car Animation Data
+    /// </summary>
     [Serializable]
     public struct CarAnimationData
     {

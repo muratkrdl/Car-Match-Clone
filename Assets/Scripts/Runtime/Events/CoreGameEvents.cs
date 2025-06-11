@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 namespace Runtime.Events
 {
+    /// <summary>
+    /// Manages core game event actions
+    /// </summary>
     public class CoreGameEvents : MonoSingleton<CoreGameEvents>
     {
         public UnityAction onGameStart;

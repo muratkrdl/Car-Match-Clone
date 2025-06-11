@@ -5,6 +5,9 @@ using Runtime.Utilities;
 
 namespace Runtime.Objects.Panels
 {
+    /// <summary>
+    /// Represents the fail panel
+    /// </summary>
     public class FailPanel : BasePanel
     {
         protected override void Awake()
@@ -15,6 +18,9 @@ namespace Runtime.Objects.Panels
             _buttons[2].onClick.AddListener(OnClick_Forward);
         }
 
+        /// <summary>
+        /// Handles the Menu button click
+        /// </summary>
         private void OnClick_Menu()
         {
             if (_clickedButton) return;
@@ -23,6 +29,9 @@ namespace Runtime.Objects.Panels
             CoreGameEvents.Instance.onGameOver?.Invoke();
         }
 
+        /// <summary>
+        /// Handles the Reset button click
+        /// </summary>
         private void OnClick_Reset()
         {
             if (_clickedButton) return;
@@ -32,6 +41,9 @@ namespace Runtime.Objects.Panels
             CoreUIEvents.Instance.onClosePanel?.Invoke(2);
         }
 
+        /// <summary>
+        /// Handles the Forward button click
+        /// </summary>
         private void OnClick_Forward()
         {
             if (_clickedButton) return;
@@ -41,11 +53,17 @@ namespace Runtime.Objects.Panels
             CoreUIEvents.Instance.onClosePanel?.Invoke(2);
         }
         
+        /// <summary>
+        /// Handles open panel animation
+        /// </summary>
         public override void OpenPanel()
         {
             transform.DOScale(ConstantsUtilities.One3, _data.AnimationDuration).SetEase(_data.AnimationEase);
         }
 
+        /// <summary>
+        /// Handles close panel animation
+        /// </summary>
         public override void ClosePanel()
         {
             transform.DOScale(ConstantsUtilities.Zero3, _data.AnimationDuration)

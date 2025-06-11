@@ -1,7 +1,10 @@
 using UnityEngine;
 
 namespace Runtime.Utilities
-{
+{ 
+    /// <summary> 
+    /// Commonly used constant values and caches
+    /// </summary>
     public static class ConstantsUtilities
     {
         

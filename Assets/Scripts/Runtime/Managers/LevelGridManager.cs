@@ -15,6 +15,9 @@ using Random = UnityEngine.Random;
 
 namespace Runtime.Managers
 {
+    /// <summary>
+    /// Manages the level grid system
+    /// </summary>
     public class LevelGridManager : MonoSingleton<LevelGridManager>
     {
         [SerializeField] private Image backgroundImage;
@@ -35,6 +38,9 @@ namespace Runtime.Managers
         private int _height;
         private Vector2 _cellSize;
 
+        /// <summary>
+        /// Subscribes to events
+        /// </summary>
         private void OnEnable()
         {
             CoreGameEvents.Instance.onLevelInitialize += OnLevelInitialize;
@@ -44,6 +50,9 @@ namespace Runtime.Managers
             _allCarsSOs = Resources.LoadAll<CarSO>("Data/CarSO").ToList();
         }
 
+        /// <summary>
+        /// When a new empty space is created on the grid, it checks for nearby cells
+        /// </summary>
         private void OnNewFreeSpace(Vector2Int arg0)
         {
             foreach (var item in _gridSystem.GetFlatGridObjectArray())
@@ -52,6 +61,9 @@ namespace Runtime.Managers
             }
         }
 
+        /// <summary>
+        /// loads level resources, initializes the grid system, and creates the level
+        /// </summary>
         private void OnLevelInitialize(int level)
         {
             // TODO : CurrentLevelIndex
@@ -64,16 +76,25 @@ namespace Runtime.Managers
             CreateLevel();
         }
         
+        /// <summary>
+        /// Resets the transform to vector3.zero
+        /// </summary>
         private void OnResetLevel()
         {
             transform.position = ConstantsUtilities.Zero3;
         }
 
+        /// <summary>
+        /// Delegates the placement of the clicked car on the grid
+        /// </summary>
         private void OnCarClicked(CarObject carObject)
         {
             _carPlaceGrid.PlaceCarOnGrid(carObject);
         }
 
+        /// <summary>
+        /// Unsubscribes to events
+        /// </summary>
         private void OnDisable()
         {
             CoreGameEvents.Instance.onLevelInitialize -= OnLevelInitialize;
@@ -82,6 +103,9 @@ namespace Runtime.Managers
             LevelGridEvents.Instance.onNewFreeSpace -= OnNewFreeSpace;
         }
 
+        /// <summary>
+        /// Loads the level resource
+        /// </summary>
         private void LoadResources(int level)
         {
             // TODO : LevelManager for _currentLevel
@@ -91,6 +115,9 @@ namespace Runtime.Managers
             backgroundImage.sprite = _currentLevel.BackgroundSprite;
         }
 
+        /// <summary>
+        /// Initializes the grid system and car placement grid based on the current level settings
+        /// </summary>
         private void InitializeGridSystem()
         {
             _width = _currentLevel.Width;
@@ -108,6 +135,9 @@ namespace Runtime.Managers
             _carPlaceGrid = new CarPlaceGrid(_gridSystem, _currentLevel);
         }
 
+        /// <summary>
+        /// Initializing obstacles cars free spaces car places
+        /// </summary>
         private void CreateLevel()
         {
             InitializeObstacle(_currentLevel.obstacleCoordinates);
@@ -126,6 +156,9 @@ namespace Runtime.Managers
             PositionGridOnCanvas();
         }
 
+        /// <summary>
+        /// Center the canvas
+        /// </summary>
         private void PositionGridOnCanvas()
         {
             float totalWidth = (_currentLevel.CarPlaceWidth-1) * _cellSize.x/2;
@@ -133,6 +166,10 @@ namespace Runtime.Managers
 
             transform.position = new Vector3(ConstantsUtilities.CenterOfWidth - totalWidth, ConstantsUtilities.CenterOfHeight - totalHeight, 0f);
         }
+        
+        /// <summary>
+        /// Sets the grid type of specified grid positions
+        /// </summary>
         private void SetGridTypes(List<Vector2Int> coordinates, GridTypes type)
         {
             foreach (var coordinate in coordinates)
@@ -140,6 +177,10 @@ namespace Runtime.Managers
                 GetGridObject(new Vector2Int(coordinate.x, coordinate.y)).SetGridType(type);
             }
         }
+        
+        /// <summary>
+        /// Initializes car objects on the grid at specified coordinates
+        /// </summary>
         private void InitializeCar(List<Vector2Int> coordinates, List<CarSO> carsSo)
         {
             if (coordinates.Count == 0) return;
@@ -157,6 +198,10 @@ namespace Runtime.Managers
                 carObject.Initialize(carSo ,gridPosition, GetGridObject(gridPosition), transform);
             }
         }
+        
+        /// <summary>
+        /// Initializes obstacle objects on the grid at specified coordinates
+        /// </summary>
         private void InitializeObstacle(List<Vector2Int> coordinates)
         {
             SetGridTypes(coordinates, GridTypes.Obstacle);
@@ -168,6 +213,10 @@ namespace Runtime.Managers
                 obstacleObject.Initialize(GetWorldPosition(gridPosition), transform);
             }
         }
+        
+        /// <summary>
+        /// Initializes free space on the grid at specified coordinates
+        /// </summary>
         private void InitializeSpaces(List<Vector2Int> coordinates)
         {
             SetGridTypes(coordinates, GridTypes.Space);
@@ -180,6 +229,10 @@ namespace Runtime.Managers
                 LevelGridEvents.Instance.onNewFreeSpace?.Invoke(pos);
             }
         }
+        
+        /// <summary>
+        /// Initializes car place objects on the grid
+        /// </summary>
         private void InitializeCarPlace()
         {
             for (int i = 0; i < _currentLevel.CarPlaceWidth; i++)
@@ -190,11 +243,24 @@ namespace Runtime.Managers
             }
         }
 
+        /// <summary>
+        /// Sets car to specified position at the given grid position
+        /// </summary>
         private void SetCarAtGridPosition(Vector2Int pos, CarObject carObject) => _gridSystem.GetGridObject(pos).SetCar(carObject);
+        
+        /// <summary>
+        /// Get GridObject at the specified grid position
+        /// </summary>
         private GridObject GetGridObject(Vector2Int gridPosition) => _gridSystem.GetGridObject(gridPosition);
 
+        /// <summary>
+        /// Get WorldPosition by grid position
+        /// </summary>
         public Vector3 GetWorldPosition(Vector2Int gridPos) => _gridSystem.GetWorldPosition(gridPos);
 
+        /// <summary>
+        /// Checks available slot in the car placement grid
+        /// </summary>
         public bool HasAvailableSlot() => _carPlaceGrid.HasAvailableSlot();
 
     }

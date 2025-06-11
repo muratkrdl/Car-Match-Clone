@@ -4,6 +4,9 @@ using Runtime.Extensions;
 
 namespace Runtime.Managers
 {
+    /// <summary>
+    /// Manages panel
+    /// </summary>
     public class UIManager : MonoSingleton<UIManager>
     {
         private void OnEnable()
@@ -11,42 +14,43 @@ namespace Runtime.Managers
             SubscribeEvents();
         }
 
+        /// <summary>
+        /// Subscribes to events
+        /// </summary>
         private void SubscribeEvents()
         {
             CoreGameEvents.Instance.onLevelSuccess += OnLevelSuccess;
             CoreGameEvents.Instance.onLevelFailed += OnLevelFailed;
         }
 
+        /// <summary>
+        /// Open WinPanel
+        /// </summary>
         private void OnLevelFailed()
         {
             CoreUIEvents.Instance.onOpenPanel?.Invoke(PanelTypes.Fail,2);
         }
 
+        /// <summary>
+        /// Open FailPanel
+        /// </summary>
         private void OnLevelSuccess()
         {
             CoreUIEvents.Instance.onOpenPanel?.Invoke(PanelTypes.Win,2);
         }
 
-        private void OnReset()
-        {
-            CoreUIEvents.Instance.onCloseAllPanels?.Invoke();
-            CoreUIEvents.Instance.onOpenPanel?.Invoke(PanelTypes.MainMenu, 1);
-        }
-        
+        /// <summary>
+        /// Unsubscribes to events
+        /// </summary>
         private void UnSubscribeEvents()
         {
             CoreGameEvents.Instance.onLevelSuccess -= OnLevelSuccess;
             CoreGameEvents.Instance.onLevelFailed -= OnLevelFailed;
         }
-
+        
         private void OnDisable()
         {
             UnSubscribeEvents();
-        }
-
-        public void Play()
-        {
-            CoreUIEvents.Instance.onClosePanel(1);
         }
 
     }

@@ -17,6 +17,9 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Runtime.Objects
 {
+    /// <summary>
+    /// Represents an CarObject
+    /// </summary>
     public class CarObject : MonoBehaviour, IPoolObject<CarObject>
     {
         private CarVisualData _visualData;
@@ -68,6 +71,9 @@ namespace Runtime.Objects
             _visualData = data.visualData;
         }
         
+        /// <summary>
+        /// Handles clicked over car
+        /// </summary>
         private void OnClick_Button()
         {
             if (!_isAvailable || !LevelGridManager.Instance.HasAvailableSlot()) return;
@@ -77,6 +83,9 @@ namespace Runtime.Objects
             LevelGridEvents.Instance.onCarClicked?.Invoke(this);
         }
 
+        /// <summary>
+        /// Initializes the CarObject
+        /// </summary>
         public void Initialize(CarSO carSo, Vector2Int gridPosition, GridObject gridObject, Transform parent)
         {
             transform.SetParent(parent);
@@ -91,24 +100,34 @@ namespace Runtime.Objects
             _gridObject.SetIsWalkable(false);
         }
         
-        // First Position To CarPlaceGridPosition
+        /// <summary>
+        /// Moves the car along a path to a new grid position
+        /// </summary>
         public void MoveToGridPosition(List<Vector3> path, TweenCallback onComplete = null)
         {
             _carMoveController.MoveToGridPosition(path, onComplete);
         }
 
         // Slide CarPlaceGridPosition
+        /// <summary>
+        /// Slides the car directly from one grid position to another grid position
+        /// </summary>
         public void MoveSingleToGridPosition(Vector2Int from, Vector2Int to)
         {
             _carMoveController.MoveSingleToGridPosition(from, to);
         }
 
-        // Blast Animation
+        /// <summary>
+        /// Plays the blast animation
+        /// </summary>
         public void BlastAnimation(Vector2Int pos, Vector2 cellSize)
         {
             _carMoveController.BlastAnimation(pos, cellSize);
         }
 
+        /// <summary>
+        /// Sets the car is available for interaction
+        /// </summary>
         public void SetIsAvailableCar(bool isAvailable)
         {
             _isAvailable = isAvailable;
@@ -119,8 +138,14 @@ namespace Runtime.Objects
         public Vector2Int GetCoordinates() => _coordinates;
         public void SetCoordinates(Vector2Int coordinates) => _coordinates = coordinates;
 
+        /// <summary>
+        /// Sets this pool to his own object pool
+        /// </summary>
         public void SetPool(ObjectPool<CarObject> pool) => _pool = pool;
 
+        /// <summary>
+        /// Releases this obstacle back to the object pool
+        /// </summary>
         public void ReleasePool()
         {
             _gridObject = null;
